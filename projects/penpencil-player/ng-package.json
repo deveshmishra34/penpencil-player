@@ -1,0 +1,18 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/penpencil-player",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": [
+      "node_modules/video.js/dist/video-js.min.css",
+      "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css"
+    ]
+  },
+  "whitelistedNonPeerDependencies": [
+    "@videojs/http-streaming",
+    "video.js",
+    "videojs-contrib-quality-levels",
+    "videojs-hls-quality-selector",
+    "videojs-youtube"
+  ]
+}

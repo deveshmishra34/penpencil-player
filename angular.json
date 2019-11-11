@@ -2,5 +2,171 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "penpencil-player": {
+      "projectType": "library",
+      "root": "projects/penpencil-player",
+      "sourceRoot": "projects/penpencil-player/src",
+      "prefix": "rs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/penpencil-player/tsconfig.lib.json",
+            "project": "projects/penpencil-player/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/penpencil-player/src/test.ts",
+            "tsConfig": "projects/penpencil-player/tsconfig.spec.json",
+            "karmaConfig": "projects/penpencil-player/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/penpencil-player/tsconfig.lib.json",
+              "projects/penpencil-player/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "penpencil-player-test": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/penpencil-player-test",
+      "sourceRoot": "projects/penpencil-player-test/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/penpencil-player-test",
+            "index": "projects/penpencil-player-test/src/index.html",
+            "main": "projects/penpencil-player-test/src/main.ts",
+            "polyfills": "projects/penpencil-player-test/src/polyfills.ts",
+            "tsConfig": "projects/penpencil-player-test/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/penpencil-player-test/src/favicon.ico",
+              "projects/penpencil-player-test/src/assets"
+            ],
+            "styles": [
+              "projects/penpencil-player-test/src/styles.scss",
+              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css"
+            ],
+            "scripts": [
+              "node_modules/video.js/dist/video.min.js",
+              "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.min.js",
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js",
+              "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
+              "node_modules/videojs-youtube/dist/Youtube.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/penpencil-player-test/src/environments/environment.ts",
+                  "with": "projects/penpencil-player-test/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "penpencil-player-test:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "penpencil-player-test:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "penpencil-player-test:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/penpencil-player-test/src/test.ts",
+            "polyfills": "projects/penpencil-player-test/src/polyfills.ts",
+            "tsConfig": "projects/penpencil-player-test/tsconfig.spec.json",
+            "karmaConfig": "projects/penpencil-player-test/karma.conf.js",
+            "assets": [
+              "projects/penpencil-player-test/src/favicon.ico",
+              "projects/penpencil-player-test/src/assets"
+            ],
+            "styles": [
+              "projects/penpencil-player-test/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/penpencil-player-test/tsconfig.app.json",
+              "projects/penpencil-player-test/tsconfig.spec.json",
+              "projects/penpencil-player-test/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/penpencil-player-test/e2e/protractor.conf.js",
+            "devServerTarget": "penpencil-player-test:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "penpencil-player-test:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "penpencil-player"
 }

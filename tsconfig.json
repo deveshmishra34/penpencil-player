@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "penpencil-player": [
+        "dist/penpencil-player"
+      ],
+      "penpencil-player/*": [
+        "dist/penpencil-player/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
