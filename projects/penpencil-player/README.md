@@ -1,24 +1,64 @@
 # PenpencilPlayer
+[![npm version](https://badge.fury.io/js/videojs-hls-quality-selector.svg)](https://www.npmjs.com/package/penpencil-player)
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.13.
 
-## Code scaffolding
+PenpencilPlayer currently supports MP4, Youtube, HLS (m3u8). you can install this via `npm i penpencil-player`
 
-Run `ng generate component component-name --project penpencil-player` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project penpencil-player`.
-> Note: Don't forget to add `--project penpencil-player` or else it will be added to the default project in your `angular.json` file. 
+## Description
+PenpencilPlayer is HTML5 video player based ob videjs library. It gathers all the neccessory plugins or library at single place to play videos like:- Vimeo, Youtube , hls (m3us).
+PenpencilPlayer require angular v6 or above.
 
-## Build
+## How to use
+Step 1: Install the penpencil-player using `npm i penpencil-player`
 
-Run `ng build penpencil-player` to build the project. The build artifacts will be stored in the `dist/` directory.
+Step 2: Paste these Styles and Script urls in your `angular.json`
 
-## Publishing
+```
+"styles": [...
+              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css"
+]
 
-After building your library with `ng build penpencil-player`, go to the dist folder `cd dist/penpencil-player` and run `npm publish`.
+"scripts": [...
+              "node_modules/video.js/dist/video.min.js",
+              "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.min.js",
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js",
+              "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
+              "node_modules/videojs-youtube/dist/Youtube.min.js"
+]
 
-## Running unit tests
+```
 
-Run `ng test penpencil-player` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Step 2: Add PenpencilPlayer component in your html.
+```
+<rs-penpencil-player [playerConfig]="playerConfig"></rs-penpencil-player>
 
-## Further help
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Step 3: Provide player config: 
+
+```
+playerConfig = {
+    poster: 'Poster Image Url',
+    liveui: false,
+    src: 'Video player source url',
+    type: 'video type',
+    autoplay: true,
+    startTime: 0 
+ };
+  
+ Currently supported video type
+  1: video/mp4
+  2: youtube
+  3: application/x-mpegURL
+```
+## Credits (Using libraries and plugins)
+
+[videojs](http://videojs.com/)
+[http-streaming](https://github.com/videojs/http-streaming)
+[videojs-hls-quality-selector](https://github.com/chrisboustead/videojs-hls-quality-selector)
+[videojs-contrib-quality-levels](https://github.com/videojs/videojs-contrib-quality-levels)
+[videojs-youtube](https://github.com/videojs/videojs-youtube)
+  
+  
+  
