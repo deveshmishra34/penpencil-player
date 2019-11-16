@@ -1,4 +1,15 @@
-import {Component, OnInit, AfterContentInit, ViewEncapsulation, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterContentInit,
+  ViewEncapsulation,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
 declare const videojs;
 
@@ -8,7 +19,7 @@ declare const videojs;
   styleUrls: ['./penpencil-player.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDestroy {
+export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
 
   @Input() playerConfig: PlayerConfig;
   @Output() onPlay: EventEmitter<any> = new EventEmitter();
@@ -20,6 +31,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerInfo: PlayerInfo;
 
   constructor() {
+    setTimeout( () => {
+      console.log('Player: ', this.playerConfig);
+    }, 5000);
   }
 
   ngOnInit() {
@@ -27,10 +41,19 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   ngAfterContentInit() {
+    this.playerInit();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.playerConfigData = new PlayerConfig(this.playerConfig);
+    this.playerInit();
+  }
+
+  playerInit() {
     this.player = videojs('rs_penpencil_player', {
       poster: this.playerConfigData.poster,
-      fluid: false,
-      fill: true,
+      fluid: true,
+      fill: false,
       responsive: false,
       playbackRates: [0.5, 1, 1.5, 2],
       inactivityTimeout: 2000,
@@ -47,6 +70,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       }
     });
 
+    this.hlsConfig();
+  }
+
+  hlsConfig() {
     this.player.src({
       src: this.playerConfigData.src,
       type: this.playerConfigData.type,
@@ -59,9 +86,14 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       displayCurrentQuality: true
     });
 
+    this.callBacks();
+  }
+
+  callBacks() {
     this.player.on('play', () => {
-      if (this.playerConfigData.startTime > 0)
+      if (this.playerConfigData.startTime > 0) {
         this.setCurrentTime(this.playerConfigData.startTime);
+      }
       this.onPlay.emit(this.getPlayerInfo());
     });
 
@@ -72,7 +104,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.player.on('ended', () => {
       this.onEnded.emit(this.getPlayerInfo());
     });
-
   }
 
   ngOnDestroy() {
@@ -172,7 +203,7 @@ class PlayerConfig {
     const data = config || {};
 
     this.poster = data.poster || '';
-    this.liveui = data.poster || false;
+    this.liveui = data.liveui || false;
     this.src = data.src || '';
     this.type = data.type || 'application/x-mpegURL';
     this.autoplay = data.autoplay || false;

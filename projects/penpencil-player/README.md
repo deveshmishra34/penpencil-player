@@ -46,10 +46,16 @@ playerConfig = {
     autoplay: true,
     startTime: 0 
  };
+ 
+ Chnage listner is being detected on player config, 
+ If you want to update player src try this.
+ 
+ playerConfig = {...} // replace the current object
+ 
   
  Currently supported video type
   1: video/mp4
-  2: youtube
+  2: video/youtube
   3: application/x-mpegURL
 ```
 ## Credits (Using libraries and plugins)
