@@ -29,13 +29,22 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
 
 ```
 
-Step 2: Add PenpencilPlayer component in your html.
+Step 3: Add ``PenpencilPalyerModule`` In AppModule
+
+```
+import: [..
+  PenpencilPlayerModule
+..
+]
+```
+
+Step 4: Add PenpencilPlayer component in your html.
 ```
 <rs-penpencil-player [playerConfig]="playerConfig"></rs-penpencil-player>
 
 ```
 
-Step 3: Provide player config: 
+Step 5: Provide player config: 
 
 ```
 playerConfig = {

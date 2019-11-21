@@ -41,7 +41,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   ngAfterContentInit() {
-    this.playerInit();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -49,7 +48,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.playerInit();
   }
 
-  playerInit() {
+  private playerInit() {
     this.player = videojs('rs_penpencil_player', {
       poster: this.playerConfigData.poster,
       fluid: true,
@@ -73,23 +72,25 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.hlsConfig();
   }
 
-  hlsConfig() {
+  private hlsConfig() {
     this.player.src({
       src: this.playerConfigData.src,
       type: this.playerConfigData.type,
       withCredentials: false,
-      smoothQualityChange: true,
+      smoothQualityChange: (this.playerConfigData.type !== 'video/youtube'),
       enableLowInitialPlaylist: true
     });
 
-    this.player.hlsQualitySelector({
-      displayCurrentQuality: true
-    });
+    if ((this.playerConfigData.type !== 'video/youtube')) {
+      this.player.hlsQualitySelector({
+        displayCurrentQuality: true
+      });
+    }
 
     this.callBacks();
   }
 
-  callBacks() {
+  private callBacks() {
     this.player.on('play', () => {
       if (this.playerConfigData.startTime > 0) {
         this.setCurrentTime(this.playerConfigData.startTime);
@@ -112,11 +113,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   // set current time in seconds
-  setCurrentTime(time) {
+  private setCurrentTime(time) {
     this.player.currentTime(time);
   }
 
-  getPlayerInfo() {
+  private getPlayerInfo() {
     this.playerInfo = new PlayerInfo();
 
     this.playerInfo.play = !this.player.paused();
