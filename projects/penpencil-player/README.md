@@ -53,7 +53,8 @@ playerConfig = {
     src: 'Video player source url',
     type: 'video type',
     autoplay: true,
-    startTime: 0 
+    startTime: 0,
+    fullScreenEnabled: false
  };
  
  Chnage listner is being detected on player config, 

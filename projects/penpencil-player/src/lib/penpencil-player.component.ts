@@ -25,13 +25,14 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   @Output() onPlay: EventEmitter<any> = new EventEmitter();
   @Output() onPause: EventEmitter<any> = new EventEmitter();
   @Output() onEnded: EventEmitter<any> = new EventEmitter();
+  @Output() onFullscreenchange: EventEmitter<any> = new EventEmitter();
 
   private player: any;
   private playerConfigData: PlayerConfig;
   private playerInfo: PlayerInfo;
 
   constructor() {
-    setTimeout( () => {
+    setTimeout(() => {
       console.log('Player: ', this.playerConfig);
     }, 5000);
   }
@@ -91,6 +92,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private callBacks() {
+
+    this.player.on('ready', () => {
+      if (this.playerConfigData.fullScreenEnabled) {
+        this.player.requestFullscreen();
+      }
+    });
+
     this.player.on('play', () => {
       if (this.playerConfigData.startTime > 0) {
         this.setCurrentTime(this.playerConfigData.startTime);
@@ -104,6 +112,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
     this.player.on('ended', () => {
       this.onEnded.emit(this.getPlayerInfo());
+    });
+
+    this.player.on('fullscreenchange', () => {
+      this.onFullscreenchange.emit(this.getPlayerInfo());
     });
   }
 
@@ -190,6 +202,7 @@ interface PlayerConfig {
   type: string;
   autoplay: boolean;
   startTime: number;
+  fullScreenEnabled: boolean;
 }
 
 class PlayerConfig {
@@ -199,6 +212,7 @@ class PlayerConfig {
   type: string;
   autoplay: boolean;
   startTime: number;
+  fullScreenEnabled: boolean;
 
   constructor(config?) {
     const data = config || {};
@@ -209,5 +223,6 @@ class PlayerConfig {
     this.type = data.type || 'application/x-mpegURL';
     this.autoplay = data.autoplay || false;
     this.startTime = data.startTime || 0;
+    this.fullScreenEnabled = data.fullScreenEnabled || false;
   }
 }

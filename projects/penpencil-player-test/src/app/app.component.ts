@@ -14,7 +14,8 @@ export class AppComponent {
     src: 'http://www.youtube.com/embed/xjS6SftYQaQ',
     type: 'video/youtube',
     autoplay: true,
-    startTime: 0
+    startTime: 0,
+    fullScreenEnabled: false
   };
 
   constructor() {
@@ -33,6 +34,10 @@ export class AppComponent {
 
   play(data) {
     console.log('Playing', data);
+  }
+
+  fullScreen(data) {
+    console.log('fullScreen', data);
   }
 
 }
