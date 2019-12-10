@@ -25,6 +25,7 @@
     "video.js": "^7.6.5",
     "videojs-contrib-quality-levels": "^2.0.9",
     "videojs-hls-quality-selector": "^1.1.0",
+    "videojs-seek-buttons": "^1.5.0",
     "videojs-youtube": "^2.6.0",
     "zone.js": "~0.9.1"
   },

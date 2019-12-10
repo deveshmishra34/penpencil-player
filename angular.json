@@ -65,14 +65,16 @@
             "styles": [
               "projects/penpencil-player-test/src/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
-              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css"
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css",
+              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.css"
             ],
             "scripts": [
               "node_modules/video.js/dist/video.min.js",
               "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.min.js",
               "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
-              "node_modules/videojs-youtube/dist/Youtube.min.js"
+              "node_modules/videojs-youtube/dist/Youtube.min.js",
+              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.js"
             ]
           },
           "configurations": {

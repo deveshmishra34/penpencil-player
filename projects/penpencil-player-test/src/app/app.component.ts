@@ -11,8 +11,8 @@ export class AppComponent {
   playerConfig = {
     poster: 'https://i.vimeocdn.com/video/831407393_1280x720.jpg?r=pad',
     liveui: false,
-    src: 'http://www.youtube.com/embed/xjS6SftYQaQ',
-    type: 'video/youtube',
+    src: 'https://player.vimeo.com/external/346819085.m3u8?s=64cf345bcd6e4bf034b3e2586a99b625f297e078&oauth2_token_id=1186381082',
+    type: 'application/x-mpegURL',
     autoplay: true,
     startTime: 0,
     fullScreenEnabled: false

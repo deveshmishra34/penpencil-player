@@ -16,7 +16,8 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
 ```
 "styles": [...
               "node_modules/video.js/dist/video-js.min.css",
-              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css"
+              "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.css",
+              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.css"
 ]
 
 "scripts": [...
@@ -24,7 +25,8 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
               "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.min.js",
               "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
-              "node_modules/videojs-youtube/dist/Youtube.min.js"
+              "node_modules/videojs-youtube/dist/Youtube.min.js",
+              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.js"
 ]
 
 ```
@@ -53,7 +55,7 @@ playerConfig = {
     src: 'Video player source url',
     type: 'video type',
     autoplay: true,
-    startTime: 0 ,
+    startTime: 0,
     fullScreenEnabled: false
  };
  
@@ -75,6 +77,7 @@ playerConfig = {
 [videojs-hls-quality-selector](https://github.com/chrisboustead/videojs-hls-quality-selector)
 [videojs-contrib-quality-levels](https://github.com/videojs/videojs-contrib-quality-levels)
 [videojs-youtube](https://github.com/videojs/videojs-youtube)
+[videojs-seek-buttons](https://github.com/mister-ben/videojs-seek-buttons)
   
   
   

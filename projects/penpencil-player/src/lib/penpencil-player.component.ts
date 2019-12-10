@@ -88,6 +88,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       });
     }
 
+    this.player.seekButtons({
+      forward: 15,
+      back: 15
+    });
+
     this.callBacks();
   }
 
