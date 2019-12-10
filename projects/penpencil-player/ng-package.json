@@ -13,6 +13,7 @@
     "video.js",
     "videojs-contrib-quality-levels",
     "videojs-hls-quality-selector",
-    "videojs-youtube"
+    "videojs-youtube",
+    "videojs-seek-buttons"
   ]
 }
