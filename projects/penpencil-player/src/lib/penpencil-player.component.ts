@@ -32,9 +32,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerInfo: PlayerInfo;
 
   constructor() {
-    setTimeout(() => {
-      console.log('Player: ', this.playerConfig);
-    }, 5000);
   }
 
   ngOnInit() {
@@ -52,9 +49,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerInit() {
     this.player = videojs('rs_penpencil_player', {
       poster: this.playerConfigData.poster,
-      fluid: true,
-      fill: false,
-      responsive: false,
+      fluid: this.playerConfigData.fluid,
+      fill: this.playerConfigData.fill,
+      responsive: this.playerConfigData.responsive,
       playbackRates: [0.5, 1, 1.5, 2],
       inactivityTimeout: 2000,
       preload: 'auto',
@@ -208,6 +205,9 @@ interface PlayerConfig {
   autoplay: boolean;
   startTime: number;
   fullScreenEnabled: boolean;
+  fluid: boolean;
+  fill: boolean;
+  responsive: boolean;
 }
 
 class PlayerConfig {
@@ -218,6 +218,9 @@ class PlayerConfig {
   autoplay: boolean;
   startTime: number;
   fullScreenEnabled: boolean;
+  fluid: boolean;
+  fill: boolean;
+  responsive: boolean;
 
   constructor(config?) {
     const data = config || {};
@@ -229,5 +232,8 @@ class PlayerConfig {
     this.autoplay = data.autoplay || false;
     this.startTime = data.startTime || 0;
     this.fullScreenEnabled = data.fullScreenEnabled || false;
+    this.fluid = data.fluid || false;
+    this.fill = data.fill || false;
+    this.responsive = data.responsive || false;
   }
 }

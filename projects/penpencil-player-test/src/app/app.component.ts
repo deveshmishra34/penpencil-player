@@ -15,6 +15,7 @@ export class AppComponent {
     type: 'application/x-mpegURL',
     autoplay: true,
     startTime: 0,
+    fill: true, // fluid, fill, responsive
     fullScreenEnabled: false
   };
 

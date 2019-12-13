@@ -26,7 +26,7 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
               "node_modules/videojs-hls-quality-selector/dist/videojs-hls-quality-selector.min.js",
               "node_modules/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js",
               "node_modules/videojs-youtube/dist/Youtube.min.js",
-              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.js"
+              "node_modules/videojs-seek-buttons/dist/videojs-seek-buttons.min.js"
 ]
 
 ```
@@ -56,7 +56,10 @@ playerConfig = {
     type: 'video type',
     autoplay: true,
     startTime: 0,
-    fullScreenEnabled: false
+    fullScreenEnabled: false,
+    fluid: boolean;
+    fill: boolean;
+    responsive: boolean;
  };
  
  Chnage listner is being detected on player config, 
