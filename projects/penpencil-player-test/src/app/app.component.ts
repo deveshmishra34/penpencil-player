@@ -11,39 +11,86 @@ export class AppComponent {
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
 
-  playerConfig = {
-    poster: 'https://i.vimeocdn.com/video/850158362_1280x720.jpg?r=pad',
-    liveui: false,
-    // src: this.url2,
-    // type: 'video/mp4',
-    src: 'https://player.vimeo.com/external/387243170.m3u8?s=5d29eaaa77b4e3a1fcf6b1edaaee22cb5d75b825&oauth2_token_id=1289522162',
-    type: 'application/x-mpegURL',
-    // src: 'http://www.youtube.com/embed/xjS6SftYQaQ',
-    // type: 'video/youtube',
-    autoplay: false,
-    startTime: 0,
-    fluid: true, // fluid, fill, responsive
-    fullScreenEnabled: false,
-    forwardBackward: false
-  };
+  // sources = [
+  //   {
+  //     src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=165&oauth2_token_id=1289522162',
+  //     type: 'video/mp4',
+  //     label: '540'
+  //   },
+  //   {
+  //     src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=139&oauth2_token_id=1289522162',
+  //     type: 'video/mp4',
+  //     label: '240'
+  //   },
+  //   {
+  //     src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=164&oauth2_token_id=1289522162',
+  //     type: 'video/mp4',
+  //     label: '360'
+  //   }
+  // ];
+
+  // sources = [
+  //   {
+  //     src: 'https://player.vimeo.com/external/388011956.m3u8?s=a0111243ef5ba67050c4dd4c9faee216593978a9&oauth2_token_id=1289522162',
+  //     type: 'application/x-mpegURL',
+  //     withCredentials: false
+  //   }
+  // ];
+
+  sources = [
+    {
+      src: 'https://player.vimeo.com/external/399080525.m3u8?s=f2b03632cd0fdb902b3f4af9ee20124ada4b2fee',
+      type: 'application/x-mpegURL',
+      withCredentials: false
+    }
+  ];
+
+  // sources = [
+  //   {
+  //     type: 'video/youtube',
+  //     src: 'https://www.youtube.com/embed/_QNJA_wFn-o'
+  //   }
+  // ];
+
+  playerConfig: any;
 
   constructor() {
+    this.playerConfig = {
+      poster: '',
+      liveui: false,
+      sources: this.sources,
+      autoplay: false,
+      startTime: 0,
+      fluid: true, // fluid, fill, responsive
+      fullScreenEnabled: false,
+      seekButtons: true,
+      seekSeconds: 30,
+      watermark: {
+        text: '8888888888'
+      }
+    };
+
     // setTimeout(() => {
     //   console.log('Heyyy');
     //   this.playerConfig = {
     //     poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
     //     liveui: false,
-    //     src: 'https://player.vimeo.com/external/387262450.m3u8?s=5d87393b375d9a4ba9b5b00a44455c66352da41d',
-    //     type: 'application/x-mpegURL',
+    //     sources: [{
+    //       src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=139&oauth2_token_id=1289522162',
+    //       type: 'video/mp4',
+    //       label: '240'
+    //     }],
     //     autoplay: true,
     //     startTime: 0,
-    //     responsive: true, // fluid, fill, responsive
-    //     fullScreenEnabled: false
+    //     fluid: true, // fluid, fill, responsive
+    //     fullScreenEnabled: false,
+    //     seekButtons: true,
+    //     seekSeconds: 2,
+    //     watermark: {
+    //       text: '8888888888'
+    //     }
     //   };
     // }, 10000);
-    // while (true) {
-    //   this.playerConfig.startTime = 500;
-    // };
   }
 
   play(data) {
@@ -52,6 +99,10 @@ export class AppComponent {
 
   fullScreen(data) {
     console.log('fullScreen', data);
+  }
+
+  initializePlayer(dataa) {
+    console.log('data', dataa);
   }
 
 }
