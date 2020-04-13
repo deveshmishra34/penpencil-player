@@ -29,21 +29,21 @@ export class AppComponent {
   //   }
   // ];
 
-  // sources = [
-  //   {
-  //     src: 'https://player.vimeo.com/external/388011956.m3u8?s=a0111243ef5ba67050c4dd4c9faee216593978a9&oauth2_token_id=1289522162',
-  //     type: 'application/x-mpegURL',
-  //     withCredentials: false
-  //   }
-  // ];
-
   sources = [
     {
-      src: 'https://vdo-penpencil.sgp1.cdn.digitaloceanspaces.com/testing/hls/master.m3u8',
+      src: 'https://player.vimeo.com/external/388011956.m3u8?s=a0111243ef5ba67050c4dd4c9faee216593978a9&oauth2_token_id=1289522162',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
   ];
+
+  // sources = [
+  //   {
+  //     src: 'https://vdo-penpencil.sgp1.cdn.digitaloceanspaces.com/testing/hls/master.m3u8',
+  //     type: 'application/x-mpegURL',
+  //     withCredentials: false
+  //   }
+  // ];
 
   // sources = [
   //   {
