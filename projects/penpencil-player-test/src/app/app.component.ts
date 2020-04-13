@@ -39,7 +39,7 @@ export class AppComponent {
 
   sources = [
     {
-      src: 'https://player.vimeo.com/external/399080525.m3u8?s=f2b03632cd0fdb902b3f4af9ee20124ada4b2fee',
+      src: 'https://vdo-penpencil.sgp1.cdn.digitaloceanspaces.com/testing/hls/master.m3u8',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
