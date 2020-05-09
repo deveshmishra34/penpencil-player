@@ -22,6 +22,7 @@
     "@videojs/http-streaming": "^1.12.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
+    "videojs-contrib-eme": "^3.7.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

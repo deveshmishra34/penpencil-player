@@ -69,30 +69,34 @@
 
         _this.setupWatermark(player, _this.options);
 
-        player.on('loadeddata', function () {
+        player.on('loadedmetadata', function () {
           // console.log(this.player.videoHeight(), this.player.videoWidth());
+          if (_this.timeInterval) return;
+
           if (!_this.options.height) {
-            _this.options.height = _this.player.videoHeight() - 100;
+            _this.options.height = (_this.player.videoHeight() ? _this.player.videoHeight() : _this.player.el_.clientHeight) - 100;
           }
 
           if (!_this.options.width) {
-            _this.options.width = _this.player.videoWidth() - 100;
+            _this.options.width = (_this.player.videoWidth() ? _this.player.videoWidth() : _this.player.el_.clientWidth) - 100;
           }
 
           _this.timeInterval = setInterval(function () {
-            var watermarkEle = document.getElementsByClassName('vjs-watermark-content')[0];
+            var watermarkEle = document.getElementsByClassName('vjs-watermark-content');
 
-            var top_bottom = _this.getRandomInt(_this.options.height);
+            if (watermarkEle && watermarkEle[0]) {
+              var top_bottom = _this.getRandomInt(_this.options.height);
 
-            var left_right = _this.getRandomInt(_this.options.width); // console.log('top_bottom: ', top_bottom, 'left_right: ', left_right);
+              var left_right = _this.getRandomInt(_this.options.width); // console.log('top_bottom: ', top_bottom, 'left_right: ', left_right);
 
 
-            watermarkEle.classList.remove('vjs-watermark-fade-out');
-            watermarkEle.classList.add('vjs-watermark-fade-in');
-            watermarkEle.style.top = top_bottom + 'px';
-            watermarkEle.style.right = left_right + 'px';
+              watermarkEle[0].classList.remove('vjs-watermark-fade-out');
+              watermarkEle[0].classList.add('vjs-watermark-fade-in');
+              watermarkEle[0].style.top = top_bottom + 'px';
+              watermarkEle[0].style.right = left_right + 'px';
 
-            _this.fadeWatermark(_this.options);
+              _this.fadeWatermark(_this.options);
+            }
           }, _this.options.after);
         }); // player.on('pause', () => {
         //   // console.log('pause');
@@ -161,8 +165,11 @@
     };
 
     _proto.fadeWatermark = function fadeWatermark(options) {
+      var _this2 = this;
+
       setTimeout(function () {
-        document.getElementsByClassName('vjs-watermark-content')[0].classList.add('vjs-watermark-fade-out');
+        // document.getElementsByClassName('vjs-watermark-content')[0].classList.add('vjs-watermark-fade-out');
+        _this2.eleClassAction(document.getElementsByClassName('vjs-watermark-content'), 'vjs-watermark-fade-out');
       }, options.fadeOut);
     };
 
@@ -176,6 +183,18 @@
       }
 
       _Plugin.prototype.dispose.call(this);
+    };
+
+    _proto.eleClassAction = function eleClassAction(ele, className, action) {
+      if (action === void 0) {
+        action = 'add';
+      }
+
+      if (ele && ele[0] && ele[0].classList && className && action === 'add') {
+        ele[0].classList.add(className);
+      } else if (ele && ele[0] && ele[0].classList && className && action === 'remove') {
+        ele[0].classList.remove(className);
+      }
     };
 
     return Watermark;

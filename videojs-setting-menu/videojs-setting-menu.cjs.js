@@ -15,10 +15,12 @@ var version = "1.0.0";
 
 var TOGGLE_MAIN_MENU = 'showMainMenu';
 var GO_TO_MAIN_MENU = 'goToMainMenu';
+var TOGGLE_RATIO_MENU = 'toggleRatioMenu';
 var TOGGLE_SPEED_MENU = 'toggleSpeedMenu';
 var TOGGLE_QUALITY_MENU = 'toggleQualityMenu';
 var CHANGE_PLAYBACK_RATE = 'changePlaybackRate';
 var CHANGE_PLAYER_QUALITY = 'changePlayerQuality';
+var CHANGE_ASPECT_RATIO = 'changeAspectRatio';
 
 var Button = videojs.getComponent('Button'); // Default options for the plugin.
 
@@ -101,6 +103,10 @@ function (_ClickableComponent) {
       case CHANGE_PLAYER_QUALITY:
         this.qualityDomMod(event, this.options_['value']);
         break;
+
+      case CHANGE_ASPECT_RATIO:
+        this.aspectDomMod(event, this.options_['value']);
+        break;
     }
   };
 
@@ -113,26 +119,42 @@ function (_ClickableComponent) {
 
     if (data.target && data.target.children.length > 1) {
       data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.target.children[1].classList.add('vjs-icon-circle-outline');
+      data.target.children[1].classList.remove('vjs-icon-circle-outline');
     } else {
       data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.currentTarget.children[1].classList.add('vjs-icon-circle-outline');
+      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
     }
   };
 
   _proto.qualityDomMod = function qualityDomMod(data, value) {
     // update outer value
-    document.getElementsByClassName('vjs-setting-quality')[0].innerHTML = value.label + 'p'; // update radio button
+    document.getElementsByClassName('vjs-setting-quality')[0].innerHTML = value.label === 'Auto' ? 'Auto' : value.label + 'p'; // update radio button
 
     document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
     document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
 
     if (data.target && data.target.children.length > 1) {
       data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.target.children[1].classList.add('vjs-icon-circle-outline');
+      data.target.children[1].classList.remove('vjs-icon-circle-outline');
     } else {
       data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.currentTarget.children[1].classList.add('vjs-icon-circle-outline');
+      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
+    }
+  };
+
+  _proto.aspectDomMod = function aspectDomMod(data, value) {
+    // update outer value
+    document.getElementsByClassName('vjs-setting-ratio')[0].innerHTML = value; // update radio button
+
+    document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
+    document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
+
+    if (data.target && data.target.children.length > 1) {
+      data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
+      data.target.children[1].classList.remove('vjs-icon-circle-outline');
+    } else {
+      data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
+      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
     }
   }
   /**
@@ -241,6 +263,7 @@ var Component$1 = videojs.getComponent('Component'); // Default options for the 
 var defaults$3 = {
   menu: ['speed', 'quality'],
   speed: [],
+  aspectRatio: ['16:9', '4:3'],
   sources: [],
   defaultQuality: 'default'
 };
@@ -257,99 +280,182 @@ function (_Component) {
     _this.options = videojs.mergeOptions(defaults$3, options); // console.log('options: ', this.options, this.options_);
     // when player is ready setup basic option
 
+    _this.el()['classList'].add('vjs-hidden');
+
     player.on('ready', function () {
-      _this.getQualityList(); // this.getQualityList();
+      console.log('ready');
 
+      _this.getSpeedList();
 
-      _this.update();
+      _this.getRatioList();
+
+      _this.getQualityList();
     }); // in case url type is not mp4 quality will be return after loadedmetadata event
 
     player.on('loadedmetadata', function () {
-      if (!_this.options_['sources'] || !_this.options_['sources'].length) {
-        _this.getSpeedList();
+      console.log('loadedmetadata'); // console.log('cache: ', this.player.getCache());
+      // if (!this.options_['sources'] || !this.options_['sources'].length) {
 
-        _this.getQualityList();
+      _this.getSpeedList();
 
-        _this.update();
-      }
+      _this.getRatioList();
+
+      _this.getQualityList(); // }
+      // setTimeout( () => {
+      //   console.log('player', player.aspectRatio('4:3'));
+      // }, 5000)
+
     });
     player.on('userinactive', function () {
-      var eleDiv = document.getElementsByClassName('vjs-settings-menu-home')[0]; //.add('vjs-hidden');
+      var eleMain = document.getElementsByClassName('vjs-setting-menu-main'); //.add('vjs-hidden');
 
-      var eleSpeed = document.getElementsByClassName('vjs-settings-menu-speed')[0]; //.add('vjs-hidden');
+      var eleDiv = document.getElementsByClassName('vjs-settings-menu-home'); //.add('vjs-hidden');
 
-      var eleQuality = document.getElementsByClassName('vjs-settings-menu-quality')[0]; //.add('vjs-hidden');
+      var eleSpeed = document.getElementsByClassName('vjs-settings-menu-speed'); //.add('vjs-hidden');
 
-      eleDiv.classList.add('vjs-hidden');
-      eleSpeed.classList.add('vjs-hidden');
-      eleQuality.classList.add('vjs-hidden');
+      var eleQuality = document.getElementsByClassName('vjs-settings-menu-quality'); //.add('vjs-hidden');
+
+      _this.eleClassAction(eleMain, 'vjs-hidden');
+
+      _this.eleClassAction(eleDiv, 'vjs-hidden');
+
+      _this.eleClassAction(eleSpeed, 'vjs-hidden');
+
+      _this.eleClassAction(eleQuality, 'vjs-hidden');
     }); // Hide/Show Speed Menu
 
     player.on(TOGGLE_MAIN_MENU, function () {
-      var eleDiv = document.getElementsByClassName('vjs-settings-menu-home')[0]; //.add('vjs-hidden');
+      var eleMain = document.getElementsByClassName('vjs-setting-menu-main'); //.add('vjs-hidden');
 
-      var eleSpeed = document.getElementsByClassName('vjs-settings-menu-speed')[0]; //.add('vjs-hidden');
+      var eleDiv = document.getElementsByClassName('vjs-settings-menu-home'); //.add('vjs-hidden');
 
-      var eleQuality = document.getElementsByClassName('vjs-settings-menu-quality')[0]; //.add('vjs-hidden');
+      var eleSpeed = document.getElementsByClassName('vjs-settings-menu-speed'); //.add('vjs-hidden');
+
+      var eleQuality = document.getElementsByClassName('vjs-settings-menu-quality'); //.add('vjs-hidden');
       // document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
       // document.getElementsByClassName('vjs-settings-menu-speed')[0].classList.remove('vjs-hidden');
 
-      if (eleDiv.classList.contains('vjs-hidden')) {
-        eleDiv.classList.remove('vjs-hidden');
-        eleSpeed.classList.add('vjs-hidden');
-        eleQuality.classList.add('vjs-hidden');
+      if (eleDiv && eleDiv[0] && eleDiv[0].classList.contains('vjs-hidden')) {
+        _this.eleClassAction(eleMain, 'vjs-hidden', 'remove');
+
+        _this.eleClassAction(eleDiv, 'vjs-hidden', 'remove');
+
+        _this.eleClassAction(eleSpeed, 'vjs-hidden');
+
+        _this.eleClassAction(eleQuality, 'vjs-hidden');
       } else {
-        eleDiv.classList.add('vjs-hidden');
-        eleSpeed.classList.add('vjs-hidden');
-        eleQuality.classList.add('vjs-hidden');
+        _this.eleClassAction(eleMain, 'vjs-hidden');
+
+        _this.eleClassAction(eleDiv, 'vjs-hidden');
+
+        _this.eleClassAction(eleSpeed, 'vjs-hidden');
+
+        _this.eleClassAction(eleQuality, 'vjs-hidden');
       }
     });
     player.on(TOGGLE_SPEED_MENU, function () {
-      document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
-      document.getElementsByClassName('vjs-settings-menu-speed')[0].classList.remove('vjs-hidden');
+      // document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
+      // document.getElementsByClassName('vjs-settings-menu-speed')[0].classList.remove('vjs-hidden');
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-home'), 'vjs-hidden');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-speed'), 'vjs-hidden', 'remove');
+    });
+    player.on(TOGGLE_RATIO_MENU, function () {
+      // document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
+      // document.getElementsByClassName('vjs-settings-menu-ratio')[0].classList.remove('vjs-hidden');
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-home'), 'vjs-hidden');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-ratio'), 'vjs-hidden', 'remove');
     }); // Hide/Show Quality Menu
 
     player.on(TOGGLE_QUALITY_MENU, function () {
-      document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
-      document.getElementsByClassName('vjs-settings-menu-quality')[0].classList.remove('vjs-hidden');
+      // document.getElementsByClassName('vjs-settings-menu-home')[0].classList.add('vjs-hidden');
+      // document.getElementsByClassName('vjs-settings-menu-quality')[0].classList.remove('vjs-hidden');
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-home'), 'vjs-hidden');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-quality'), 'vjs-hidden', 'remove');
     }); // Go back to main menu, hide everything accept main menu
 
     player.on(GO_TO_MAIN_MENU, function () {
-      document.getElementsByClassName('vjs-settings-menu-home')[0].classList.remove('vjs-hidden');
-      document.getElementsByClassName('vjs-settings-menu-speed')[0].classList.add('vjs-hidden');
-      document.getElementsByClassName('vjs-settings-menu-quality')[0].classList.add('vjs-hidden');
+      //   document.getElementsByClassName('vjs-settings-menu-home')[0].classList.remove('vjs-hidden');
+      //   document.getElementsByClassName('vjs-settings-menu-speed')[0].classList.add('vjs-hidden');
+      //   document.getElementsByClassName('vjs-settings-menu-quality')[0].classList.add('vjs-hidden');
+      //   document.getElementsByClassName('vjs-settings-menu-ratio')[0].classList.add('vjs-hidden');
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-home'), 'vjs-hidden', 'remove');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-speed'), 'vjs-hidden');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-quality'), 'vjs-hidden');
+
+      _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-ratio'), 'vjs-hidden');
     }); // on playbackRate change
 
     player.on(CHANGE_PLAYBACK_RATE, function (data, item) {
       _this.player().playbackRate(item ? item : 1);
+    }); // on playbackRate change
+
+    player.on(CHANGE_ASPECT_RATIO, function (data, item) {
+      // console.log(CHANGE_ASPECT_RATIO, item);
+      _this.player().aspectRatio(item ? item : '16:9');
     }); // on player quality change
 
     player.on(CHANGE_PLAYER_QUALITY, function (data, item) {
-      var isPaused = _this.player().paused();
+      var tech = _this.player().tech().hls;
 
-      var currentTime = _this.player().currentTime();
+      if (item && (item.type === 'application/x-mpegURL' || item.type === 'application/dash+xml') && tech) {
+        var masterDetails = tech.playlists.master;
+        var representations = masterDetails.playlists;
+        var playLists = representations.filter(function (playlistInfo) {
+          if (playlistInfo && playlistInfo.resolvedUri === item.src) {
+            return playlistInfo;
+          }
+        });
 
-      _this.player().src(item); // this.player_.play();
+        if (playLists.length) {
+          tech.playlists.media(playLists[0]);
 
-
-      _this.player().ready(function () {
-        // console.log('Player is ready toh play');
-        if (!isPaused) {
-          _this.player().play();
+          tech.selectPlaylist = function () {
+            return playLists[0];
+          };
         }
+      } else {
+        var isPaused = _this.player().paused();
 
-        _this.player().currentTime(currentTime);
-      });
+        var currentTime = _this.player().currentTime();
+
+        _this.player().src(item);
+
+        _this.player().ready(function () {
+          if (!isPaused) {
+            _this.player().play();
+          }
+
+          _this.player().currentTime(currentTime);
+        });
+      }
     });
     return _this;
   }
 
   var _proto = SettingMenuMain.prototype;
 
+  _proto.eleClassAction = function eleClassAction(ele, className, action) {
+    if (action === void 0) {
+      action = 'add';
+    }
+
+    if (ele && ele[0] && ele[0].classList && className && action === 'add') {
+      ele[0].classList.add(className);
+    } else if (ele && ele[0] && ele[0].classList && className && action === 'remove') {
+      ele[0].classList.remove(className);
+    }
+  };
+
   _proto.createEl = function createEl() {
     var el = videojs.dom.createEl('div', {
       className: 'vjs-setting-menu-main'
-    });
+    }); // el.classList.addClass('vjs-hidden');
+
     return el;
   }
   /**
@@ -358,6 +464,7 @@ function (_Component) {
   ;
 
   _proto.update = function update() {
+    console.log('update');
     var menu = this.createMenu();
 
     if (this['menu']) {
@@ -384,6 +491,9 @@ function (_Component) {
       name: 'speed',
       options: this.getSpeedMenu()
     }, {
+      name: 'ratio',
+      options: this.getRatioMenu()
+    }, {
       name: 'quality',
       options: this.getQualityMenu()
     }];
@@ -404,24 +514,50 @@ function (_Component) {
     this.options_['currentPlaybackSpeed'] = playBackRate;
   };
 
-  _proto.getQualityList = function getQualityList() {
-    var currentSources = this.player().currentSource(); // const tech = this.player_.tech();
-    // console.log(tech['hls']);
+  _proto.getRatioList = function getRatioList() {
+    this.options_['aspectRatio'] = ['16:9', '4:3'];
+    this.options_['currentRatio'] = '16:9';
+  };
 
-    if (currentSources && currentSources.type === 'application/x-mpegURL' && this.player()['hls']) {
-      var representations = this.player()['hls'].representations(); // console.log(representations);
+  _proto.getQualityList = function getQualityList() {
+    var currentSource = this.player().currentSource();
+    var tech = this.player().tech().hls;
+
+    if (currentSource && (currentSource.type === 'application/x-mpegURL' || currentSource.type === 'application/dash+xml') && tech) {
+      var masterDetails = tech.playlists.master;
+      var representations = masterDetails.playlists;
+
+      if (this.options_['sources'] && (currentSource.src === representations[0].resolvedUri || representations[0].resolvedUri.includes(currentSource.src))) {
+        return;
+      }
 
       this.options_['sources'] = representations.map(function (el) {
         return {
-          src: el.id && (el.id.split(':')[0].length === 5 || el.id.split(':')[0].length === 4) ? el.id : el.id.substr(2, el.id.length - 1),
+          src: el.resolvedUri && (el.resolvedUri.split(':')[0].length === 5 || el.id.split(':')[0].length === 4) ? el.resolvedUri : el.resolvedUri.substr(2, el.resolvedUri.length - 1),
           //: currentSources.src
-          label: el.height.toString() || '240',
-          type: 'application/x-mpegURL'
+          label: el.attributes && el.attributes.RESOLUTION && el.attributes.RESOLUTION.height ? el.attributes.RESOLUTION.height.toString() : '240',
+          type: currentSource.type
         };
-      }); // console.log(this.options_['sources']);
-    } else if (currentSources && currentSources.type === 'video/mp4') {
+      });
+      this.options_['sources'].push({
+        src: currentSource.src,
+        label: 'Auto',
+        type: currentSource.type
+      });
+      this.options_['defaultQuality'] = 'Auto'; // console.log(this.options_['sources']);
+    } else if (currentSource && currentSource.type === 'video/mp4') {
+      // console.log('here');
+      var currentSources = this.player().currentSources();
       var sources = [];
-      this.player().currentSources().forEach(function (el) {
+      var filterSources = this.options_['sources'] ? this.options_['sources'].filter(function (el) {
+        return el.src === currentSources[0].src;
+      }) : [];
+
+      if (this.options_['sources'] && currentSource.src === currentSources[0].src && filterSources.length && filterSources[0].src === currentSource.src) {
+        return;
+      }
+
+      currentSources.forEach(function (el) {
         if (el && el.label) {
           sources.push({
             src: el.src,
@@ -432,16 +568,18 @@ function (_Component) {
       }); // console.log('sources: ', sources, this.player().currentSources());
 
       this.options_['sources'] = sources;
+      this.options_['defaultQuality'] = currentSource.label ? currentSource.label + 'p' : 'Auto';
     }
 
     if (this.options_['sources'] && this.options_['sources'].length) {
       this.options_['sources'] = this.options_['sources'].sort(function (a, b) {
         return parseInt(b.label, 10) - parseInt(a.label, 10);
-      });
-      currentSources = currentSources && currentSources.type === 'video/mp4' ? currentSources : this.options_['sources'][this.options_['sources'].length - 1];
-      var defaultQuality = this.options_['defaultQuality'] ? this.options_['defaultQuality'].toString() : 'default';
-      this.playDefaultQuality(this.options_['sources'], currentSources, defaultQuality);
+      }); // currentSources = (currentSources && currentSources.type === 'video/mp4') ? currentSources : this.options_['sources'][this.options_['sources'].length - 1];
+      // const defaultQuality = this.options_['defaultQuality']? this.options_['defaultQuality'].toString() : 'default';
+      // this.playDefaultQuality(this.options_['sources'], currentSources, defaultQuality);
     }
+
+    this.update();
   };
 
   _proto.playDefaultQuality = function playDefaultQuality(sources, currentSources, quality) {
@@ -466,12 +604,12 @@ function (_Component) {
 
     var speedOptions = sources.map(function (el) {
       return {
-        name: el.label + 'p',
+        name: el.label === 'Auto' ? 'Auto' : el.label + 'p',
         value: el,
-        isSelected: el.label === currentSource['src'],
-        className: el.label === currentSource['label'] ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline',
+        isSelected: el.label === currentSource['src'] || el.label === 'Auto',
+        className: el.label === currentSource['label'] || el.label === 'Auto' ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline',
         event: CHANGE_PLAYER_QUALITY,
-        innerHTML: "<span class=\"vjs-setting-title\">" + (el.label + 'p') + "</span>\n<span class=\"vjs-setting-icon vjs-quality " + (el.label === currentSource['label'] ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline') + "\"></span>"
+        innerHTML: "<span class=\"vjs-setting-title\">" + (el.label === 'Auto' ? 'Auto' : el.label + 'p') + "</span>\n<span class=\"vjs-setting-icon vjs-quality " + (el.label === currentSource['label'] || el.label === 'Auto' ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline') + "\"></span>"
       };
     });
     speedOptions.splice(0, 0, {
@@ -514,6 +652,35 @@ function (_Component) {
     return speedOptions;
   };
 
+  _proto.getRatioMenu = function getRatioMenu() {
+    var aspectRatio = this.options_['aspectRatio'];
+    var currentAspectRatio = this.options_['currentRatio'];
+
+    if (!aspectRatio || !currentAspectRatio) {
+      return;
+    }
+
+    var ratioOptions = aspectRatio.map(function (el) {
+      return {
+        name: el,
+        value: el,
+        isSelected: el === currentAspectRatio,
+        className: el === currentAspectRatio ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline',
+        event: CHANGE_ASPECT_RATIO,
+        innerHTML: "<span class=\"vjs-setting-title\">" + (el === 1 ? 'Normal' : el + 'x') + "</span>\n<span class=\"vjs-setting-icon vjs-ratio " + (el === currentAspectRatio ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline') + "\"></span>"
+      };
+    });
+    ratioOptions.splice(0, 0, {
+      name: 'Ratio',
+      value: 'Ratio',
+      isSelected: false,
+      className: 'vjs-icon-play',
+      event: GO_TO_MAIN_MENU,
+      innerHTML: "<span style=\"transform: rotate(180deg);\" class=\"vjs-setting-icon vjs-icon-play\"></span>\n                    <span class=\"vjs-setting-title\">Ratio</span>"
+    });
+    return ratioOptions;
+  };
+
   _proto.getHomeMenu = function getHomeMenu() {
     if (!this.options['menu'] || !this.options['menu'].length) {
       return;
@@ -553,7 +720,17 @@ function (_Component) {
       });
     }
 
-    if (requiredMenu.indexOf('speed') > -1) {
+    if (requiredMenu.indexOf('aspect-ratio') > -1 && this.options_['aspectRatio'] && this.options_['aspectRatio'].length) {
+      menu.push({
+        name: 'Ratio',
+        class: '',
+        value: '16:9',
+        event: TOGGLE_RATIO_MENU,
+        innerHTML: "<span class=\"vjs-setting-title text-left\">Ratio</span>\n<span class=\"vjs-setting-icon vjs-setting-ratio\">16:9</span>"
+      });
+    }
+
+    if (requiredMenu.indexOf('speed') > -1 && this.options_['speed'] && this.options_['speed'].length) {
       menu.push({
         name: 'Speed',
         class: '',
@@ -563,7 +740,7 @@ function (_Component) {
       });
     }
 
-    if (requiredMenu.indexOf('quality') > -1) {
+    if (requiredMenu.indexOf('quality') > -1 && this.options_['sources'] && this.options_['sources'].length) {
       menu.push({
         name: 'Quality',
         class: '',
@@ -632,7 +809,7 @@ function (_Plugin) {
 
       _this.player.controlBar.settingButton = _this.player.controlBar.addChild('settingButton');
 
-      _this.player.controlBar.el().insertBefore(_this.player.controlBar.settingButton.el(), _this.player.controlBar.el().lastChild.nextSibling);
+      _this.player.controlBar.el().insertBefore(_this.player.controlBar.settingButton.el(), _this.player.controlBar.fullscreenToggle.el());
 
       _this.player.controlBar.settingButton = _this.player.controlBar.addChild('settingMenuMain');
     });

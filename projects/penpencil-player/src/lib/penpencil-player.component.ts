@@ -23,7 +23,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   @Input() playerConfig: PlayerConfig;
   @Output() inIt: EventEmitter<any> = new EventEmitter();
-  @Output() onPlay: EventEmitter<any> = new EventEmitter();
+  @Output() onPlay: EventEmitter<any> = new EventEmitter<any>();
   @Output() onPause: EventEmitter<any> = new EventEmitter();
   @Output() onEnded: EventEmitter<any> = new EventEmitter();
   @Output() onFullscreenchange: EventEmitter<any> = new EventEmitter();
@@ -31,6 +31,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private player: any;
   private playerConfigData: PlayerConfig;
   private playerInfo: PlayerInfo;
+  private playerControls: any;
 
   constructor() {
   }
@@ -38,8 +39,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   ngOnInit() {
     this.playerConfigData = new PlayerConfig(this.playerConfig);
     this.playerInit();
-
-    this.hlsConfig();
+    this.callBacks();
   }
 
   ngAfterContentInit() {
@@ -59,10 +59,17 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       return;
     }
 
-    let controls = {};
+    this.setupPlayerControls();
+    this.setupPlayer();
+    this.setupSrc();
+    this.initializePlugins();
+
+  }
+
+  private setupPlayerControls() {
 
     if (this.playerConfigData.liveui) {
-      controls = {
+      this.playerControls = {
         playToggle: {},
         currentTimeDisplay: {},
         progressControl: {},
@@ -72,7 +79,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         fullscreenToggle: {},
       };
     } else {
-      controls = {
+      this.playerControls = {
         playToggle: {},
         currentTimeDisplay: {},
         progressControl: {},
@@ -82,7 +89,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         fullscreenToggle: {}
       };
     }
+  }
 
+  private setupPlayer() {
     this.player = videojs('rs_penpencil_player', {
       html5: {
         hls: {
@@ -93,13 +102,16 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         nativeAudioTracks: false,
         nativeTextTracks: false
       },
+      plugins: {
+        eme: {}
+      },
       poster: this.playerConfigData.poster,
       fill: this.playerConfigData.fill,
       fluid: this.playerConfigData.fluid,
       responsive: this.playerConfigData.responsive,
       playbackRates: [0.5, 1, 1.25, 1.5, 1.75, 2],
       controlBar: {
-        children: controls
+        children: this.playerControls
       },
       inactivityTimeout: 3000,
       preload: 'auto',
@@ -111,9 +123,14 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         enablePrivacyEnhancedMode: true
       }
     });
+  }
 
-    this.player.src(this.playerConfigData.sources);
+  private setupSrc() {
+    this.player.src(this.playerConfig.sources);
     this.inIt.emit(this.player);
+  }
+
+  private initializePlugins() {
 
     // this.player.settingMenu({
     //   menu: ['speed', 'quality']
@@ -135,25 +152,23 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     if (this.playerConfigData.watermark && (this.playerConfigData.watermark.text || this.playerConfigData.watermark.imageUrl)) {
       this.player.watermark(this.playerConfigData.watermark);
     }
-
-  }
-
-  private hlsConfig() {
-    this.callBacks();
   }
 
   private callBacks() {
 
-    this.player.on('ready', () => {
+    this.player.on('loadedmetadata', () => {
       if (this.playerConfigData.fullScreenEnabled) {
         this.player.requestFullscreen();
       }
+      if (this.playerConfigData.startTime > 0) {
+        setTimeout(() => {
+          this.setCurrentTime(this.playerConfigData.startTime);
+        }, 500);
+      }
     });
 
-    this.player.on('play', () => {
-      if (this.playerConfigData.startTime > 0) {
-        this.setCurrentTime(this.playerConfigData.startTime);
-      }
+    this.player.on('play',  () => {
+
       this.onPlay.emit(this.getPlayerInfo());
     });
 
@@ -177,6 +192,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   // set current time in seconds
   private setCurrentTime(time) {
+    console.log('setCurrentTime: ', time, !!this.player);
     this.player.currentTime(time);
   }
 
