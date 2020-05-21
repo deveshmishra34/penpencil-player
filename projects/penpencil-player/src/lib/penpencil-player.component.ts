@@ -152,6 +152,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     if (this.playerConfigData.watermark && (this.playerConfigData.watermark.text || this.playerConfigData.watermark.imageUrl)) {
       this.player.watermark(this.playerConfigData.watermark);
     }
+    if (this.playerConfigData.startTime > 0) {
+      setTimeout(() => {
+        this.setCurrentTime(this.playerConfigData.startTime);
+      }, 500);
+    }
   }
 
   private callBacks() {
@@ -160,15 +165,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       if (this.playerConfigData.fullScreenEnabled) {
         this.player.requestFullscreen();
       }
-      if (this.playerConfigData.startTime > 0) {
-        setTimeout(() => {
-          this.setCurrentTime(this.playerConfigData.startTime);
-        }, 500);
-      }
     });
 
     this.player.on('play',  () => {
-
       this.onPlay.emit(this.getPlayerInfo());
     });
 
@@ -192,7 +191,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   // set current time in seconds
   private setCurrentTime(time) {
-    console.log('setCurrentTime: ', time, !!this.player);
     this.player.currentTime(time);
   }
 

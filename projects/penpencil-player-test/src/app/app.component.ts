@@ -10,7 +10,7 @@ export class AppComponent {
 
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
-  KEY = 'f93deea9570bb4899a3a78d6ea502eeb';
+  KEY = 'fabfc2c224eaa4f5883ea8d9e19eed55';
   player: any;
 
   sourcesMop4 = [
@@ -32,12 +32,12 @@ export class AppComponent {
   ];
 
   sources = [{
-    src: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/14042020/dash/master.mpd',
     type: 'application/dash+xml'
   }];
 
   enrcyptedSources = [{
-    src: 'https://penpencil-vdo.sgp1.cdn.digitaloceanspaces.com/42570f11-b471-4468-9ff4-8fee7d3a5be2/master.mpd',
+    src: 'https://penpencil-vdo.sgp1.cdn.digitaloceanspaces.com/1de0bf81-627d-483d-9aa1-be4e0cfded2c/master.mpd',
     type: 'application/dash+xml',
     keySystems: {
       'org.w3.clearkey': {
@@ -82,22 +82,24 @@ export class AppComponent {
   playerConfig: any;
 
   constructor() {
-    this.playerConfig = {
-      poster: '',
-      liveui: false,
-      sources: this.sourcesYoutube,
-      autoplay: false,
-      startTime: 2000,
-      fluid: true, // fluid, fill, responsive
-      fullScreenEnabled: false,
-      seekButtons: true,
-      seekSeconds: 30,
-      watermark: {
-        url: '',
-        image: '',
-        text: '8888888888'
-      }
-    };
+    setTimeout ( () => {
+      this.playerConfig = {
+        poster: '',
+        liveui: false,
+        sources: this.enrcyptedSources,
+        autoplay: true,
+        startTime: 0,
+        fluid: true, // fluid, fill, responsive
+        fullScreenEnabled: false,
+        seekButtons: true,
+        seekSeconds: 30,
+        watermark: {
+          url: '',
+          image: '',
+          text: '8888888888'
+        }
+      };
+    }, 5000);
 
     // setTimeout(() => {
     //   console.log('Heyyy');
@@ -144,12 +146,12 @@ export class AppComponent {
 
   base64ToHex(str) {
     str = str.replace(/\-/g, '+').replace(/\_/g, '/');
-    for (var i = 0, bin = atob(str.replace(/[ \r\n]+$/, "")), hex = []; i < bin.length; ++i) {
+    for (var i = 0, bin = atob(str.replace(/[ \r\n]+$/, '')), hex = []; i < bin.length; ++i) {
       let tmp = bin.charCodeAt(i).toString(16);
-      if (tmp.length === 1) tmp = "0" + tmp;
+      if (tmp.length === 1) tmp = '0' + tmp;
       hex[hex.length] = tmp;
     }
-    return hex.join("");
+    return hex.join('');
   }
 
   base64ToHexOld(str) {
