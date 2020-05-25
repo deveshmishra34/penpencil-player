@@ -28,12 +28,20 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
 
 ```
 "styles": [...
-              "node_modules/video.js/dist/video-js.min.css"
+              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.css",
+              "node_modules/penpencil-player/videojs-setting-menu/videojs-setting-menu.css",
+              "node_modules/penpencil-player/videojs-watermark/videojs-watermark.css"
               ]
 
 "scripts": [...
               "node_modules/video.js/dist/video.min.js",
-              "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.min.js"
+              "node_modules/penpencil-player/videojs-contrib-eme/videojs-contrib-eme.min.js",
+              "node_modules/penpencil-player/videojs-youtube/videojs-youtube.min.js",
+              "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.min.js",
+              "node_modules/penpencil-player/videojs-setting-menu/videojs-setting-menu.min.js",
+              "node_modules/penpencil-player/videojs-watermark/videojs-watermark.js",
+              "node_modules/penpencil-player/videojs-liveui/videojs-liveui.min.js"
               ]
 ```
 
@@ -68,6 +76,7 @@ playerConfig = {
     fluid: boolean; // fluid || fill || responsive
     seekButtons: true, // Add plugin first
     seekSeconds: 2, // Add plugin first
+    defaultQuality: 'auto' // Auto|'240'|'360'...
     watermark: { // Add plugin first
       text: string, 
       link: string, 
@@ -90,55 +99,63 @@ Step 5: Adding Plugins:
 
 Download all the plugins and unzip it and paste all the plugins in project directory
 
-i) Setting button for video quality and speed settings [videojs-setting-menu-plugin.](https://drive.google.com/open?id=1wwipcHEIvy_i-HFBYydX_9PirtruHRH6)
+i) Setting button for video quality and speed settings [videojs-setting-menu-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-setting-menu)
 
 ```
 "styles": [...
-              "videojs-setting-menu/videojs-setting-menu.css"
+              "node_modules/penpencil-player/videojs-setting-menu/videojs-setting-menu.css"
               ]
 
 "scripts": [...
-              "videojs-setting-menu/videojs-setting-menu.min.js"
+              "node_modules/penpencil-player/videojs-setting-menu/videojs-setting-menu.min.js"
               ]
 ```
 
-ii) Seek button for forward and backward [videojs-seek-buttons-plugin.](https://drive.google.com/open?id=1wMkiwATKKF6aNVEbogV_xRM1w0h1GG_W)
+ii) Seek button for forward and backward [videojs-seek-buttons-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-seek-buttons)
 
 ```
 "styles": [...
-              "videojs-seek-buttons/videojs-seek-buttons.css"
+              "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.css"
               ]
 
 "scripts": [...
-              "videojs-seek-buttons/videojs-seek-buttons.min.js"
+              "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.min.js"
               ]
 ```
 
-iii) Youtube video support [videojs-youtube-plugin.](https://drive.google.com/open?id=1smVRPMa-XUUdukbH0-5CnoYqHzWUslPI)
+iii) Youtube video support [videojs-youtube-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-youtube)
 
 ```
 "scripts": [...
-              "videojs-youtube/videojs-youtube.min.js"
+              "node_modules/penpencil-player/videojs-youtube/videojs-youtube.min.js"
               ]
 ```
 
-iv) Dynamic watermarking [videojs-watermark-plugin.](https://drive.google.com/open?id=1FLOB0Yu9b75hPdBrTnCmhO6R6-OmxXin)
+iv) Dynamic watermarking [videojs-watermark-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-watermark)
 
 ```
 "styles": [...
-              "videojs-watermark/videojs-watermark.css"
+              "node_modules/penpencil-player/videojs-watermark/videojs-watermark.css"
               ]
 
 "scripts": [...
-              "videojs-watermark/videojs-watermark.js"
+              "node_modules/penpencil-player/videojs-watermark/videojs-watermark.js"
               ]
 ```
 
-v) Video live ui support  [videojs-liveui-plugin.](https://drive.google.com/open?id=19C6NTtHrXTGW0IoFh03hs62A2EtLa8FG)
+v) Video live ui support  [videojs-liveui-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-liveui)
 
 ```
 "scripts": [...
               "videojs-liveui/videojs-liveui.min.js"
+              ]
+```
+
+vi) Video.js eme support  [videojs-eme-plugin.](https://github.com/deveshmishra34/penpencil-player/tree/master/videojs-contrib-eme)
+
+```
+"scripts": [...
+              "node_modules/penpencil-player/videojs-contrib-eme/videojs-contrib-eme.min.js"
               ]
 ```
 
