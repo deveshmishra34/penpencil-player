@@ -82,12 +82,12 @@ export class AppComponent {
   playerConfig: any;
 
   constructor() {
-    setTimeout(() => {
+    // setTimeout(() => {
       this.playerConfig = {
-        poster: '',
+        poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
         liveui: false,
         sources: this.enrcyptedSources,
-        autoplay: true,
+        autoplay: false,
         startTime: 0,
         fluid: true, // fluid, fill, responsive
         fullScreenEnabled: false,
@@ -100,7 +100,7 @@ export class AppComponent {
           text: '8888888888'
         }
       };
-    }, 5000);
+    // }, 5000);
 
     // setTimeout(() => {
     //   console.log('Heyyy');

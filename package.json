@@ -4,10 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && scripts/after_build.js",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "scripts/post_install.js",
+    "publishOnly": "ng build && scripts/after_build.js && npm publish dist/penpencil-player/"
   },
   "private": false,
   "dependencies": {
