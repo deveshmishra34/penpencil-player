@@ -74,8 +74,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         currentTimeDisplay: {},
         progressControl: {},
         liveui: {},
-        settingButton: {},
-        settingMenuMain: {},
         fullscreenToggle: {},
       };
     } else {
@@ -84,8 +82,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         currentTimeDisplay: {},
         progressControl: {},
         durationDisplay: {},
-        settingButton: {},
-        settingMenuMain: {},
         fullscreenToggle: {}
       };
     }
@@ -132,9 +128,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   private initializePlugins() {
 
-    // this.player.settingMenu({
-    //   menu: ['speed', 'quality']
-    // });
+    this.player.settingMenu({
+      menu: ['speed', 'quality'],
+      defaultQuality: this.playerConfig.defaultQuality
+    });
 
     if (this.playerConfigData.seekButtons) {
       this.player.seekButtons({
@@ -266,6 +263,7 @@ interface PlayerConfig {
   fluid: boolean;
   fill: boolean;
   responsive: boolean;
+  defaultQuality: string;
   forwardBackward: boolean;
 }
 
@@ -279,6 +277,7 @@ class PlayerConfig {
   fullScreenEnabled: boolean;
   fluid: boolean;
   fill: boolean;
+  defaultQuality: string;
   responsive: boolean;
   forwardBackward: boolean;
   watermark: { text: string, link: string, imageUrl: string };
@@ -298,6 +297,7 @@ class PlayerConfig {
     this.fluid = data.fluid || false;
     this.fill = data.fill || false;
     this.responsive = data.responsive || false;
+    this.defaultQuality = data.defaultQuality || 'Auto';
     this.forwardBackward = data.forwardBackward || false;
     this.watermark = data.watermark || {};
     this.seekButtons = data.seekButtons || false;

@@ -82,7 +82,7 @@ export class AppComponent {
   playerConfig: any;
 
   constructor() {
-    setTimeout ( () => {
+    setTimeout(() => {
       this.playerConfig = {
         poster: '',
         liveui: false,
@@ -93,6 +93,7 @@ export class AppComponent {
         fullScreenEnabled: false,
         seekButtons: true,
         seekSeconds: 30,
+        defaultQuality: '360', // auto|240|360...
         watermark: {
           url: '',
           image: '',
@@ -133,9 +134,8 @@ export class AppComponent {
   }
 
   initializePlayer(dataa) {
-    console.log('data', dataa);
+    // console.log('data', dataa);
     this.player = dataa;
-    console.log(this.player.tech());
   }
 
   hexToBase64(str) {
