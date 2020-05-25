@@ -279,8 +279,8 @@
       var _this;
 
       _this = _Component.call(this, player, options) || this;
-      _this.options = videojs.mergeOptions(defaults$3, options); // console.log('options: ', this.options, this.options_);
-      // when player is ready setup basic option
+      _this.options = videojs.mergeOptions(defaults$3, options);
+      console.log('options: ', options); // when player is ready setup basic option
 
       _this.el()['classList'].add('vjs-hidden');
 
@@ -522,10 +522,13 @@
     };
 
     _proto.getQualityList = function getQualityList() {
+      var _this2 = this;
+
       var currentSource = this.player().currentSource();
       var tech = this.player().tech().hls;
 
-      if (currentSource && (currentSource.type === 'application/x-mpegURL' || currentSource.type === 'application/dash+xml') && tech) {
+      if (currentSource && (currentSource.type === 'application/x-mpegURL' || currentSource.type === 'application/dash+xml') && tech && tech.playlists && tech.playlists.master) {
+        console.log(tech);
         var masterDetails = tech.playlists.master;
         var representations = masterDetails.playlists;
 
@@ -533,14 +536,40 @@
           return;
         }
 
-        this.options_['sources'] = representations.map(function (el) {
-          return {
-            src: el.resolvedUri && (el.resolvedUri.split(':')[0].length === 5 || el.id.split(':')[0].length === 4) ? el.resolvedUri : el.resolvedUri.substr(2, el.resolvedUri.length - 1),
-            //: currentSources.src
-            label: el.attributes && el.attributes.RESOLUTION && el.attributes.RESOLUTION.height ? el.attributes.RESOLUTION.height.toString() : '240',
-            type: currentSource.type
-          };
+        var sources = {};
+        representations.forEach(function (el) {
+          var height = el.attributes && el.attributes.RESOLUTION && el.attributes.RESOLUTION.height ? el.attributes.RESOLUTION.height.toString() : '240';
+
+          if (!sources.hasOwnProperty(height)) {
+            sources[height] = {
+              src: el.resolvedUri && (el.resolvedUri.split(':')[0].length === 5 || el.id.split(':')[0].length === 4) ? el.resolvedUri : el.resolvedUri.substr(2, el.resolvedUri.length - 1),
+              //: currentSources.src
+              label: el.attributes && el.attributes.RESOLUTION && el.attributes.RESOLUTION.height ? el.attributes.RESOLUTION.height.toString() : '240',
+              type: currentSource.type
+            };
+          }
+
+          var defaultQuality = _this2.options_['defaultQuality'];
+
+          if (defaultQuality && defaultQuality.includes('p')) {
+            defaultQuality = defaultQuality.replace('p', '');
+          }
+
+          if (defaultQuality && defaultQuality === height) {
+            console.log('defaultQuality: ', defaultQuality);
+            tech.playlists.media(el);
+
+            tech.selectPlaylist = function () {
+              return el;
+            };
+          } // let selectedBandwith = 0;
+          //
+          // let bandwidth = el.attributes && el.attributes.BANDWIDTH ? el.attributes.BANDWIDTH : '';
+          // console.log(defaultQuality, height, defaultQuality === height, bandwidth, tech.bandwidth, tech.systemBandwidth);
+          // tech.bandwidth = 2400000;
+
         });
+        this.options_['sources'] = Object.values(sources);
         this.options_['sources'].push({
           src: currentSource.src,
           label: 'Auto',
@@ -550,7 +579,7 @@
       } else if (currentSource && currentSource.type === 'video/mp4') {
         // console.log('here');
         var currentSources = this.player().currentSources();
-        var sources = [];
+        var _sources = [];
         var filterSources = this.options_['sources'] ? this.options_['sources'].filter(function (el) {
           return el.src === currentSources[0].src;
         }) : [];
@@ -561,7 +590,7 @@
 
         currentSources.forEach(function (el) {
           if (el && el.label) {
-            sources.push({
+            _sources.push({
               src: el.src,
               label: el.label,
               type: el.type
@@ -569,7 +598,7 @@
           }
         }); // console.log('sources: ', sources, this.player().currentSources());
 
-        this.options_['sources'] = sources;
+        this.options_['sources'] = _sources;
         this.options_['defaultQuality'] = currentSource.label ? currentSource.label + 'p' : 'Auto';
       }
 
@@ -813,7 +842,7 @@
 
         _this.player.controlBar.el().insertBefore(_this.player.controlBar.settingButton.el(), _this.player.controlBar.fullscreenToggle.el());
 
-        _this.player.controlBar.settingButton = _this.player.controlBar.addChild('settingMenuMain');
+        _this.player.controlBar.settingButton = _this.player.controlBar.addChild('settingMenuMain', _this.options);
       });
 
       return _this;
