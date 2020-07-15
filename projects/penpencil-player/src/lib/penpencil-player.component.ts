@@ -92,7 +92,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       html5: {
         hls: {
           overrideNative: true,
-          enableLowInitialPlaylist: true
+          enableLowInitialPlaylist: false
         },
         nativeVideoTracks: false,
         nativeAudioTracks: false,
@@ -158,11 +158,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   private callBacks() {
 
-    this.player.on('loadedmetadata', () => {
-      if (this.playerConfigData.fullScreenEnabled) {
-        this.player.requestFullscreen();
-      }
-    });
+    if (this.playerConfigData.fullScreenEnabled) {
+      this.player.requestFullscreen();
+    }
 
     this.player.on('play',  () => {
       this.onPlay.emit(this.getPlayerInfo());

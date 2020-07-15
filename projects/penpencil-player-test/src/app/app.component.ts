@@ -10,7 +10,8 @@ export class AppComponent {
 
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
-  KEY = 'fabfc2c224eaa4f5883ea8d9e19eed55';
+  KEY = '896d6551be07e29f111e3de7443e77ce';
+  // KEY = '06ca4d2cf39b2008faf65093d452c6a0';
   player: any;
 
   sourcesMop4 = [
@@ -31,13 +32,17 @@ export class AppComponent {
     }
   ];
 
-  sources = [{
-    src: 'https://penpencil.pc.cdn.bitgravity.com/14042020/dash/master.mpd',
+  sourcesDash = [{
+    src: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
     type: 'application/dash+xml'
   }];
 
+  // enrcyptedSources getLicense function will only work in localhost and secured url (https)
   enrcyptedSources = [{
-    src: 'https://penpencil-vdo.sgp1.cdn.digitaloceanspaces.com/1de0bf81-627d-483d-9aa1-be4e0cfded2c/master.mpd',
+    // src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372_1/dash/master.mpd',
+    // src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372/dash/master.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372/master.mpd',
+    // src: 'https://penpencil-vdo.sgp1.cdn.digitaloceanspaces.com/38211443-5fff-4e1f-9f78-0c71bacbdc3a/master.mpd',
     type: 'application/dash+xml',
     keySystems: {
       'org.w3.clearkey': {
@@ -48,14 +53,15 @@ export class AppComponent {
           console.log('keyMessage: ', keyMessage);
           // Parse the clearkey license request.
           let request = JSON.parse(new TextDecoder().decode(keyMessage));
-          console.log('request', request);
-          console.log('key_id:', this.base64ToHex(request.kids[0]));
+          // console.log('request', request);
+          // console.log('key_id:', this.base64ToHex(request.kids[0]));
           let keyObj = {
             kty: 'oct',
             kid: request.kids[0],
             k: this.hexToBase64(this.KEY) // This key sould be come from server
           };
 
+          console.log('keys', JSON.stringify(keyObj), this.base64ToHex(request.kids[0]), this.KEY);
           callback(null, new TextEncoder().encode(JSON.stringify({
             keys: [keyObj]
           })));
@@ -66,7 +72,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://antmediademo.s2sclasses.com/WebRTCAppEE/streams/968376665878992461415077_adaptive.m3u8',
+      src: 'https://player.vimeo.com/external/387243170.m3u8?s=5d29eaaa77b4e3a1fcf6b1edaaee22cb5d75b825',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
@@ -75,7 +81,7 @@ export class AppComponent {
   sourcesYoutube = [
     {
       type: 'video/youtube',
-      src: 'https://www.youtube.com/embed/yOlK2McwDa0'
+      src: 'https://www.youtube.com/embed/yZZFobQNdug'
     }
   ];
 
@@ -93,7 +99,7 @@ export class AppComponent {
         fullScreenEnabled: false,
         seekButtons: true,
         seekSeconds: 30,
-        defaultQuality: '360', // auto|240|360...
+        // defaultQuality: '360', // auto|240|360...
         watermark: {
           url: '',
           image: '',

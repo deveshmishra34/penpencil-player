@@ -21,10 +21,8 @@
     "@angular/platform-browser": "~8.2.4",
     "@angular/platform-browser-dynamic": "~8.2.4",
     "@angular/router": "~8.2.4",
-    "@videojs/http-streaming": "^1.12.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
-    "videojs-contrib-eme": "^3.7.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -36,7 +34,6 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
-    "@types/video.js": "^7.3.3",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -51,6 +48,7 @@
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
-    "video.js": "^7.6.6"
+    "video.js": "^7.6.6",
+    "videojs-contrib-eme": "^3.7.0"
   }
 }

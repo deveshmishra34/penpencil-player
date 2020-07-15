@@ -1,4 +1,4 @@
-/*! @name videojs-setting-menu @version 1.0.0 @license MIT */
+/*! @name videojs-setting-menu @version 2.0.0 @license MIT */
 import videojs from 'video.js';
 
 function _inheritsLoose(subClass, superClass) {
@@ -7,7 +7,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }
 
-var version = "1.0.0";
+var version = "2.0.0";
 
 var TOGGLE_MAIN_MENU = 'showMainMenu';
 var GO_TO_MAIN_MENU = 'goToMainMenu';
@@ -81,77 +81,17 @@ function (_ClickableComponent) {
 
   _proto.createEl = function createEl() {
     var el = videojs.dom.createEl('div', {
-      className: "vjs-setting-item",
+      className: "vjs-setting-item ",
       innerHTML: this.options_['innerHTML']
     });
     return el;
   };
 
   _proto.handleClick = function handleClick(event) {
-    // console.log('Clicked Sub Menu', event);
-    this.player().trigger(this.options_['event'], this.options_['value']);
-
-    switch (this.options_['event']) {
-      case CHANGE_PLAYBACK_RATE:
-        this.playbackRateDomMod(event, this.options_['value']);
-        break;
-
-      case CHANGE_PLAYER_QUALITY:
-        this.qualityDomMod(event, this.options_['value']);
-        break;
-
-      case CHANGE_ASPECT_RATIO:
-        this.aspectDomMod(event, this.options_['value']);
-        break;
-    }
-  };
-
-  _proto.playbackRateDomMod = function playbackRateDomMod(data, value) {
-    // update outer value
-    document.getElementsByClassName('vjs-setting-speed')[0].innerHTML = value === 1 ? 'Normal' : value + 'x'; // update radio button
-
-    document.getElementsByClassName('vjs-speed vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
-    document.getElementsByClassName('vjs-speed vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
-
-    if (data.target && data.target.children.length > 1) {
-      data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.target.children[1].classList.remove('vjs-icon-circle-outline');
-    } else {
-      data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
-    }
-  };
-
-  _proto.qualityDomMod = function qualityDomMod(data, value) {
-    // update outer value
-    document.getElementsByClassName('vjs-setting-quality')[0].innerHTML = value.label === 'Auto' ? 'Auto' : value.label + 'p'; // update radio button
-
-    document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
-    document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
-
-    if (data.target && data.target.children.length > 1) {
-      data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.target.children[1].classList.remove('vjs-icon-circle-outline');
-    } else {
-      data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
-    }
-  };
-
-  _proto.aspectDomMod = function aspectDomMod(data, value) {
-    // update outer value
-    document.getElementsByClassName('vjs-setting-ratio')[0].innerHTML = value; // update radio button
-
-    document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
-    document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
-
-    if (data.target && data.target.children.length > 1) {
-      data.target.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.target.children[1].classList.remove('vjs-icon-circle-outline');
-    } else {
-      data.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
-      data.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
-    }
+    this.player().trigger(this.options_['event'], {
+      item: this.options_['value'],
+      element: event
+    });
   }
   /**
    * Dispose of the `menu-button` and all child components.
@@ -273,8 +213,8 @@ function (_Component) {
     var _this;
 
     _this = _Component.call(this, player, options) || this;
-    _this.options = videojs.mergeOptions(defaults$3, options);
-    console.log('options: ', options); // when player is ready setup basic option
+    _this.options = videojs.mergeOptions(defaults$3, options); // console.log('options: ', options);
+    // when player is ready setup basic option
 
     _this.el()['classList'].add('vjs-hidden');
 
@@ -386,16 +326,52 @@ function (_Component) {
       _this.eleClassAction(document.getElementsByClassName('vjs-settings-menu-ratio'), 'vjs-hidden');
     }); // on playbackRate change
 
-    player.on(CHANGE_PLAYBACK_RATE, function (data, item) {
-      _this.player().playbackRate(item ? item : 1);
+    player.on(CHANGE_PLAYBACK_RATE, function (_, data) {
+      var item = data.item;
+      var element = data.element;
+
+      _this.player().playbackRate(item ? item : 1); // update outer value
+
+
+      document.getElementsByClassName('vjs-setting-speed')[0].innerHTML = item === 1 ? 'Normal' : item + 'x'; // update radio button
+
+      document.getElementsByClassName('vjs-speed vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
+      document.getElementsByClassName('vjs-speed vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
+
+      if (element.target && element.target.children.length > 1) {
+        element.target.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.target.children[1].classList.remove('vjs-icon-circle-outline');
+      } else {
+        element.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
+      }
     }); // on playbackRate change
 
-    player.on(CHANGE_ASPECT_RATIO, function (data, item) {
-      // console.log(CHANGE_ASPECT_RATIO, item);
-      _this.player().aspectRatio(item ? item : '16:9');
+    player.on(CHANGE_ASPECT_RATIO, function (_, data) {
+      var item = data.item;
+      var element = data.element; // console.log(CHANGE_ASPECT_RATIO, item);
+
+      _this.player().aspectRatio(item ? item : '16:9'); // update outer value
+
+
+      document.getElementsByClassName('vjs-setting-ratio')[0].innerHTML = item; // update radio button
+
+      document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
+      document.getElementsByClassName('vjs-ratio vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
+
+      if (element.target && element.target.children.length > 1) {
+        element.target.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.target.children[1].classList.remove('vjs-icon-circle-outline');
+      } else {
+        element.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
+      }
     }); // on player quality change
 
-    player.on(CHANGE_PLAYER_QUALITY, function (data, item) {
+    player.on(CHANGE_PLAYER_QUALITY, function (_, data) {
+      var item = data.item;
+      var element = data.element;
+
       var tech = _this.player().tech().hls;
 
       if (item && (item.type === 'application/x-mpegURL' || item.type === 'application/dash+xml') && tech) {
@@ -428,6 +404,21 @@ function (_Component) {
 
           _this.player().currentTime(currentTime);
         });
+      } // console.log(CHANGE_PLAYER_QUALITY, data, item);
+      // update outer value
+
+
+      document.getElementsByClassName('vjs-setting-quality')[0].innerHTML = item.label === 'Auto' ? 'Auto' : item.label + 'p'; // update radio button
+
+      document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.add('vjs-icon-circle-outline');
+      document.getElementsByClassName('vjs-quality vjs-icon-circle-inner-circle')[0].classList.remove('vjs-icon-circle-inner-circle');
+
+      if (element.target && element.target.children.length > 1) {
+        element.target.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.target.children[1].classList.remove('vjs-icon-circle-outline');
+      } else {
+        element.currentTarget.children[1].classList.add('vjs-icon-circle-inner-circle');
+        element.currentTarget.children[1].classList.remove('vjs-icon-circle-outline');
       }
     });
     return _this;
@@ -518,12 +509,19 @@ function (_Component) {
   _proto.getQualityList = function getQualityList() {
     var _this2 = this;
 
-    var currentSource = this.player().currentSource();
+    var currentSource = this.player().currentSource(); // this.player()['hls']
+
     var tech = this.player().tech().hls;
+    var defaultQuality = this.options_['defaultQuality'];
+
+    if (defaultQuality && defaultQuality.includes('p')) {
+      defaultQuality = defaultQuality.replace('p', '');
+    } // console.log('tech: ', tech);
+
 
     if (currentSource && (currentSource.type === 'application/x-mpegURL' || currentSource.type === 'application/dash+xml') && tech && tech.playlists && tech.playlists.master) {
-      console.log(tech);
-      var masterDetails = tech.playlists.master;
+      var masterDetails = tech.playlists.master; // console.log('masterDetails: ', masterDetails);
+
       var representations = masterDetails.playlists;
 
       if (this.options_['sources'] && (currentSource.src === representations[0].resolvedUri || representations[0].resolvedUri.includes(currentSource.src))) {
@@ -536,40 +534,33 @@ function (_Component) {
 
         if (!sources.hasOwnProperty(height)) {
           sources[height] = {
-            src: el.resolvedUri && (el.resolvedUri.split(':')[0].length === 5 || el.id.split(':')[0].length === 4) ? el.resolvedUri : el.resolvedUri.substr(2, el.resolvedUri.length - 1),
+            src: el.resolvedUri && (el.resolvedUri.split(':')[0].length === 5 || el.resolvedUri.split(':')[0].length === 4) ? el.resolvedUri : el.resolvedUri.substr(2, el.resolvedUri.length - 1),
             //: currentSources.src
             label: el.attributes && el.attributes.RESOLUTION && el.attributes.RESOLUTION.height ? el.attributes.RESOLUTION.height.toString() : '240',
             type: currentSource.type
           };
         }
 
-        var defaultQuality = _this2.options_['defaultQuality'];
-
-        if (defaultQuality && defaultQuality.includes('p')) {
-          defaultQuality = defaultQuality.replace('p', '');
-        }
-
         if (defaultQuality && defaultQuality === height) {
-          console.log('defaultQuality: ', defaultQuality);
           tech.playlists.media(el);
 
           tech.selectPlaylist = function () {
             return el;
           };
-        } // let selectedBandwith = 0;
-        //
-        // let bandwidth = el.attributes && el.attributes.BANDWIDTH ? el.attributes.BANDWIDTH : '';
-        // console.log(defaultQuality, height, defaultQuality === height, bandwidth, tech.bandwidth, tech.systemBandwidth);
-        // tech.bandwidth = 2400000;
+        }
+      }); // In lower end browsers Object.values will not work;
+      // this.options_['sources'] = Object.values(sources);
+      // this.options_['sources'] = [sources[144]];
 
+      this.options_['sources'] = Object.keys(sources).map(function (e) {
+        return sources[e];
       });
-      this.options_['sources'] = Object.values(sources);
       this.options_['sources'].push({
         src: currentSource.src,
         label: 'Auto',
         type: currentSource.type
       });
-      this.options_['defaultQuality'] = 'Auto'; // console.log(this.options_['sources']);
+      this.options_['defaultQuality'] = defaultQuality || 'Auto'; // console.log(this.options_['sources']);
     } else if (currentSource && currentSource.type === 'video/mp4') {
       // console.log('here');
       var currentSources = this.player().currentSources();
@@ -589,6 +580,16 @@ function (_Component) {
             label: el.label,
             type: el.type
           });
+        }
+
+        if (defaultQuality && defaultQuality === el.label) {
+          currentSource = {
+            src: el.src,
+            label: el.label,
+            type: el.type
+          };
+
+          _this2.player().src(currentSource);
         }
       }); // console.log('sources: ', sources, this.player().currentSources());
 
@@ -624,20 +625,23 @@ function (_Component) {
   };
 
   _proto.getQualityMenu = function getQualityMenu() {
+    var _this3 = this;
+
     var currentSource = this.player().currentSource();
     var sources = this.options_['sources'] || []; // console.log('sources: ', sources, 'currentSrc: ', currentSource, this.options_, this.player_.getCache());
 
-    var speedOptions = sources.map(function (el) {
+    var qualityOptions = sources.map(function (el) {
+      // console.log(el.label, currentSource['label'], this.options_['defaultQuality'], (el.label === currentSource['label'] || el.label === this.options_['defaultQuality']));
       return {
         name: el.label === 'Auto' ? 'Auto' : el.label + 'p',
         value: el,
-        isSelected: el.label === currentSource['src'] || el.label === 'Auto',
-        className: el.label === currentSource['label'] || el.label === 'Auto' ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline',
+        isSelected: el.label === currentSource['label'] || el.label === _this3.options_['defaultQuality'],
+        className: el.label === currentSource['label'] || el.label === _this3.options_['defaultQuality'] ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline',
         event: CHANGE_PLAYER_QUALITY,
-        innerHTML: "<span class=\"vjs-setting-title\">" + (el.label === 'Auto' ? 'Auto' : el.label + 'p') + "</span>\n<span class=\"vjs-setting-icon vjs-quality " + (el.label === currentSource['label'] || el.label === 'Auto' ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline') + "\"></span>"
+        innerHTML: "<span class=\"vjs-setting-title\">" + (el.label === 'Auto' ? 'Auto' : el.label + 'p') + "</span>\n<span class=\"vjs-setting-icon vjs-quality " + (el.label === currentSource['label'] || el.label === _this3.options_['defaultQuality'] ? 'vjs-icon-circle-inner-circle' : 'vjs-icon-circle-outline') + "\"></span>"
       };
     });
-    speedOptions.splice(0, 0, {
+    qualityOptions.splice(0, 0, {
       name: 'Quality',
       value: 'Quality',
       isSelected: false,
@@ -645,7 +649,7 @@ function (_Component) {
       event: GO_TO_MAIN_MENU,
       innerHTML: "<span style=\"transform: rotate(180deg);\" class=\"vjs-setting-icon vjs-icon-play\"></span>\n                    <span class=\"vjs-setting-title\">Quality</span>"
     });
-    return speedOptions;
+    return qualityOptions;
   };
 
   _proto.getSpeedMenu = function getSpeedMenu() {
@@ -763,9 +767,10 @@ function (_Component) {
         event: TOGGLE_SPEED_MENU,
         innerHTML: "<span class=\"vjs-setting-title text-left\">Speed</span>\n<span class=\"vjs-setting-icon vjs-setting-speed\">Normal</span>"
       });
-    }
+    } // show quality menu only when there is more than two quality (including auto)
 
-    if (requiredMenu.indexOf('quality') > -1 && this.options_['sources'] && this.options_['sources'].length) {
+
+    if (requiredMenu.indexOf('quality') > -1 && this.options_['sources'] && this.options_['sources'].length > 2) {
       menu.push({
         name: 'Quality',
         class: '',

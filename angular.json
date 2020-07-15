@@ -64,15 +64,14 @@
             ],
             "styles": [
               "projects/penpencil-player-test/src/styles.scss",
-              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/video.js/dist/video-js.css",
               "videojs-seek-buttons/videojs-seek-buttons.css",
               "videojs-setting-menu/videojs-setting-menu.css",
               "videojs-watermark/videojs-watermark.css"
             ],
             "scripts": [
-              "node_modules/video.js/dist/video.min.js",
+              "node_modules/video.js/dist/video.js",
               "node_modules/videojs-contrib-eme/dist/videojs-contrib-eme.min.js",
-              "videojs-youtube/videojs-youtube.min.js",
               "videojs-seek-buttons/videojs-seek-buttons.min.js",
               "videojs-setting-menu/videojs-setting-menu.min.js",
               "videojs-watermark/videojs-watermark.js",
