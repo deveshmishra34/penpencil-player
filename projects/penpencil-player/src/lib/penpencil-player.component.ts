@@ -10,6 +10,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
+import {NetworkDetectionService} from './services/network-detection.service';
 
 declare const videojs;
 
@@ -33,24 +34,29 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerInfo: PlayerInfo;
   private playerControls: any;
 
-  constructor() {
+  constructor(
+    private networkDetectionService: NetworkDetectionService
+  ) {
   }
 
   ngOnInit() {
     this.playerConfigData = new PlayerConfig(this.playerConfig);
-    this.playerInit();
-    this.callBacks();
   }
 
   ngAfterContentInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.playerConfigData = new PlayerConfig(this.playerConfig);
-    if (this.player) {
-      this.player.src(this.playerConfigData.sources);
-      this.player.poster(this.playerConfigData.poster);
-    }
+    this.play(this.playerConfig);
+  }
+
+  private play(playerConfig) {
+    this.playerConfigData = new PlayerConfig(playerConfig);
+    this.playerInit();
+    // if (this.player) {
+    //   this.player.src(this.playerConfigData.sources);
+    //   this.player.poster(this.playerConfigData.poster);
+    // }
   }
 
   private playerInit() {
@@ -63,7 +69,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.setupPlayer();
     this.setupSrc();
     this.initializePlugins();
-
+    this.callBacks();
+    this.networkChange();
   }
 
   private setupPlayerControls() {
@@ -162,7 +169,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.player.requestFullscreen();
     }
 
-    this.player.on('play',  () => {
+    this.player.on('error', (error) => {
+      console.log('error: ', error);
+    });
+
+    this.player.on('play', () => {
       this.onPlay.emit(this.getPlayerInfo());
     });
 
@@ -206,6 +217,39 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.playerInfo.fullScreen = this.player.isFullscreen();
     return this.playerInfo;
   }
+
+  networkChange() {
+
+    this.networkDetectionService.monitor(false).subscribe(currentState => {
+      const hasNetworkConnection = currentState.hasNetworkConnection;
+      const hasInternetAccess = currentState.hasInternetAccess;
+      if (hasNetworkConnection && hasInternetAccess) {
+        const playerConfigTemp = {...this.playerConfig};
+        playerConfigTemp.startTime = Math.round(this.player.currentTime());
+        this.player.reset();
+        this.player.src([]);
+        // console.log('playerCache: ', playerCache.lastPlaybackRate, playerCache);
+        this.play(playerConfigTemp);
+        if (!playerConfigTemp.autoplay) {
+          setTimeout(() => {
+            this.player.play();
+          }, 500);
+        }
+      }
+      // else {
+      // this.player.trigger('error', {});
+      // const playerBuffered = this.player.bufferedEnd();
+      //
+      // const pauseAfter = (Math.round(playerBuffered) - currentPlayerInfo.playTime) * 1000 || 0;
+      // // console.log('pauseAfter: ', playerBuffered, currentPlayerInfo.playTime, pauseAfter);
+      // setTimeout( () => {
+      //   this.player.pause();
+      // }, pauseAfter);
+      // }
+    });
+
+
+  }
 }
 
 interface PlayerInfo {
@@ -240,11 +284,11 @@ class PlayerInfo {
     this.play = data.play || false;
     this.pause = data.pause || false;
     this.ended = data.ended || false;
-    this.duration = data.duration || 0;
+    this.duration = Math.round(data.duration) || 0;
     this.poster = data.poster || '';
     this.volume = data.volume || 0;
-    this.playTime = data.playTime || 0;
-    this.remainingTime = data.remainingTime || 0;
+    this.playTime = Math.round(data.playTime) || 0;
+    this.remainingTime = Math.round(data.remainingTime) || 0;
     this.muted = data.muted || false;
     this.fullScreen = data.fullScreen || false;
   }
@@ -282,7 +326,7 @@ class PlayerConfig {
   seekButtons: boolean;
   seekSeconds: number;
 
-  constructor(config?) {
+  constructor(config, playerCache?) {
     const data = config || {};
 
     this.poster = data.poster || '';

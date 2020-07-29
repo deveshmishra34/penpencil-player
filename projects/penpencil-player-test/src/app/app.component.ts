@@ -10,11 +10,17 @@ export class AppComponent {
 
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
-  KEY = '896d6551be07e29f111e3de7443e77ce';
+  KEY = '18ee65047edb659e7d646810e8e49a4f';
+  // KEY = '4ad6bce3b56a00a4476c8a05e518e4a3';
   // KEY = '06ca4d2cf39b2008faf65093d452c6a0';
   player: any;
 
   sourcesMop4 = [
+    {
+      src: 'https://player.vimeo.com/external/441851343.sd.mp4?s=da06cda32a378c9a35e9b0c5509c0da4d33f6ab1&profile_id=139&oauth2_token_id=1349487470',
+      type: 'video/mp4',
+      label: '480'
+    },
     {
       src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=165&oauth2_token_id=1289522162',
       type: 'video/mp4',
@@ -39,18 +45,15 @@ export class AppComponent {
 
   // enrcyptedSources getLicense function will only work in localhost and secured url (https)
   enrcyptedSources = [{
-    // src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372_1/dash/master.mpd',
-    // src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372/dash/master.mpd',
-    src: 'https://penpencil.pc.cdn.bitgravity.com/5e1e6c97-0b5d-40a3-b40c-504aecc80372/master.mpd',
-    // src: 'https://penpencil-vdo.sgp1.cdn.digitaloceanspaces.com/38211443-5fff-4e1f-9f78-0c71bacbdc3a/master.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/b6ed9a93-5900-4904-86c8-514a5d2e4c16/master.mpd',
     type: 'application/dash+xml',
     keySystems: {
       'org.w3.clearkey': {
         videoContentType: 'video/mp4;codecs="avc1.42c01e"',
         audioContentType: 'audio/mp4;codecs="mp4a.40.2"',
         getLicense: (emeOptions, keyMessage, callback) => {
-          console.log('emeOptions: ', emeOptions);
-          console.log('keyMessage: ', keyMessage);
+          // console.log('emeOptions: ', emeOptions);
+          // console.log('keyMessage: ', keyMessage);
           // Parse the clearkey license request.
           let request = JSON.parse(new TextDecoder().decode(keyMessage));
           // console.log('request', request);
@@ -61,7 +64,7 @@ export class AppComponent {
             k: this.hexToBase64(this.KEY) // This key sould be come from server
           };
 
-          console.log('keys', JSON.stringify(keyObj), this.base64ToHex(request.kids[0]), this.KEY);
+          // console.log('keys', JSON.stringify(keyObj), this.base64ToHex(request.kids[0]), this.KEY);
           callback(null, new TextEncoder().encode(JSON.stringify({
             keys: [keyObj]
           })));
@@ -72,7 +75,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://player.vimeo.com/external/387243170.m3u8?s=5d29eaaa77b4e3a1fcf6b1edaaee22cb5d75b825',
+      src: 'https://player.vimeo.com/external/438913176.m3u8?s=6616690f97c4886c5f117c0831a14c865663fca3',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
