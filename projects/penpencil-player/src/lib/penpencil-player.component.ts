@@ -204,11 +204,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private setPlaybackRate(lastPlaybackrate) {
-    const playBackRate = this.player.playbackRate();
-    // console.log('playBackRate: ', playBackRate, 'lastPlaybackrate: ', lastPlaybackrate);
-    // if (playBackRate !== lastPlaybackrate) {
     this.player.playbackRate(lastPlaybackrate);
-    // }
   }
 
   private getPlayerInfo() {
@@ -245,7 +241,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         const playerBuffered = Math.round(this.player.bufferedEnd());
         const currentTime = Math.round(this.player.currentTime());
         let resetAfter = (playerBuffered - currentTime) * 1000 || 0;
-        // console.log(currentTime, playerBuffered, resetAfter);
+        console.log(currentTime, playerBuffered, resetAfter);
         if (!resetAfter) {
           resetAfter = 1000;
         }

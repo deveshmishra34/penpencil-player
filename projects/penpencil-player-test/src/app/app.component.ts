@@ -97,7 +97,7 @@ export class AppComponent {
         liveui: false,
         sources: this.enrcyptedSources,
         autoplay: false,
-        startTime: 300,
+        startTime: 0,
         fluid: true, // fluid, fill, responsive
         fullScreenEnabled: false,
         seekButtons: true,

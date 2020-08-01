@@ -71,6 +71,7 @@
             ],
             "scripts": [
               "node_modules/video.js/dist/video.js",
+              "node_modules/@videojs/http-streaming/dist/videojs-http-streaming.js",
               "node_modules/videojs-contrib-eme/dist/videojs-contrib-eme.min.js",
               "videojs-seek-buttons/videojs-seek-buttons.min.js",
               "videojs-setting-menu/videojs-setting-menu.min.js",

@@ -73,7 +73,7 @@ export class NetworkDetectionService implements OnDestroy {
     //   this.resetPlayerSub.next(true);
     // }, resetTime);
     this.resetPlayerTimer = setInterval(() => {
-      // console.log(resetTime);
+      console.log(resetTime);
       resetTime = resetTime - 1000;
       if (resetTime === 0) {
         this.clearTimer();

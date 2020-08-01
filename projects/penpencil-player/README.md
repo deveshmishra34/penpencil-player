@@ -28,14 +28,15 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
 
 ```
 "styles": [...
-              "node_modules/video.js/dist/video-js.min.css",
+              "node_modules/video.js/dist/video-js.css",
               "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.css",
               "node_modules/penpencil-player/videojs-setting-menu/videojs-setting-menu.css",
               "node_modules/penpencil-player/videojs-watermark/videojs-watermark.css"
               ]
 
 "scripts": [...
-              "node_modules/video.js/dist/video.min.js",
+              "node_modules/video.js/dist/video.js",
+              ""node_modules/@videojs/http-streaming/dist/videojs-http-streaming.js",
               "node_modules/penpencil-player/videojs-contrib-eme/videojs-contrib-eme.min.js",
               "node_modules/penpencil-player/videojs-youtube/videojs-youtube.min.js",
               "node_modules/penpencil-player/videojs-seek-buttons/videojs-seek-buttons.min.js",
@@ -44,6 +45,7 @@ Step 2: Paste these Styles and Script urls in your `angular.json`
               "node_modules/penpencil-player/videojs-liveui/videojs-liveui.min.js"
               ]
 ```
+
 
 Step 3: Add ``PenpencilPalyerModule`` In AppModule
 
