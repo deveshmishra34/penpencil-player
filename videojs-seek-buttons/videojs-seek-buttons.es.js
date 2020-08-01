@@ -38,7 +38,8 @@ function (_Button) {
 
   _proto.handleClick = function handleClick(event) {
     var direction = this.options['direction'];
-    var seconds = this.options['seconds']; // console.log('Button tap', direction, seconds, this.player);
+    var seconds = this.options['seconds'];
+    var remainingTime = this.player().remainingTime(); // console.log('Button tap', direction, seconds, this.player);
 
     switch (direction) {
       case 'forward':
@@ -46,6 +47,11 @@ function (_Button) {
         setTimeout(function () {
           event.target.classList.remove('vjs-skip-forward-anim');
         }, 100);
+
+        if (remainingTime < seconds) {
+          return;
+        }
+
         this.player_.currentTime(this.player_.currentTime() + seconds);
         break;
 

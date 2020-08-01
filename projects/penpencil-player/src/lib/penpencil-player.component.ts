@@ -11,6 +11,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import {NetworkDetectionService} from './services/network-detection.service';
+import {Subscription} from 'rxjs';
 
 declare const videojs;
 
@@ -33,6 +34,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerConfigData: PlayerConfig;
   private playerInfo: PlayerInfo;
   private playerControls: any;
+  private networkDetectionSubs: Subscription;
+  private playerResetSubs: Subscription;
 
   constructor(
     private networkDetectionService: NetworkDetectionService
@@ -41,6 +44,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   ngOnInit() {
     this.playerConfigData = new PlayerConfig(this.playerConfig);
+    this.callBacks();
+    this.networkChange();
   }
 
   ngAfterContentInit() {
@@ -69,8 +74,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.setupPlayer();
     this.setupSrc();
     this.initializePlugins();
-    this.callBacks();
-    this.networkChange();
   }
 
   private setupPlayerControls() {
@@ -156,11 +159,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     if (this.playerConfigData.watermark && (this.playerConfigData.watermark.text || this.playerConfigData.watermark.imageUrl)) {
       this.player.watermark(this.playerConfigData.watermark);
     }
-    if (this.playerConfigData.startTime > 0) {
-      setTimeout(() => {
-        this.setCurrentTime(this.playerConfigData.startTime);
-      }, 500);
-    }
   }
 
   private callBacks() {
@@ -174,6 +172,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
 
     this.player.on('play', () => {
+      if (this.playerConfigData.startTime > 0) {
+        this.setCurrentTime(this.playerConfigData.startTime);
+      }
+
+      this.setPlaybackRate(this.playerConfigData.lastPlaybackRate);
       this.onPlay.emit(this.getPlayerInfo());
     });
 
@@ -200,6 +203,14 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.player.currentTime(time);
   }
 
+  private setPlaybackRate(lastPlaybackrate) {
+    const playBackRate = this.player.playbackRate();
+    // console.log('playBackRate: ', playBackRate, 'lastPlaybackrate: ', lastPlaybackrate);
+    // if (playBackRate !== lastPlaybackrate) {
+    this.player.playbackRate(lastPlaybackrate);
+    // }
+  }
+
   private getPlayerInfo() {
     this.playerInfo = new PlayerInfo();
 
@@ -219,22 +230,26 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   networkChange() {
+    if (this.networkDetectionSubs) {
+      this.networkDetectionSubs.unsubscribe();
+    }
 
-    this.networkDetectionService.monitor(false).subscribe(currentState => {
+    if (this.playerResetSubs) {
+      this.playerResetSubs.unsubscribe();
+    }
+
+    this.networkDetectionSubs = this.networkDetectionService.monitor(false).subscribe(currentState => {
       const hasNetworkConnection = currentState.hasNetworkConnection;
       const hasInternetAccess = currentState.hasInternetAccess;
       if (hasNetworkConnection && hasInternetAccess) {
-        const playerConfigTemp = {...this.playerConfig};
-        playerConfigTemp.startTime = Math.round(this.player.currentTime());
-        this.player.reset();
-        this.player.src([]);
-        // console.log('playerCache: ', playerCache.lastPlaybackRate, playerCache);
-        this.play(playerConfigTemp);
-        if (!playerConfigTemp.autoplay) {
-          setTimeout(() => {
-            this.player.play();
-          }, 500);
+        const playerBuffered = Math.round(this.player.bufferedEnd());
+        const currentTime = Math.round(this.player.currentTime());
+        let resetAfter = (playerBuffered - currentTime) * 1000 || 0;
+        // console.log(currentTime, playerBuffered, resetAfter);
+        if (!resetAfter) {
+          resetAfter = 1000;
         }
+        this.networkDetectionService.setResetPlayer(currentTime, resetAfter);
       }
       // else {
       // this.player.trigger('error', {});
@@ -249,6 +264,28 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
 
 
+    this.playerResetSubs = this.networkDetectionService.resetPlayer().subscribe((value) => {
+      if (value) {
+        this.resetPlayer();
+      }
+    });
+  }
+
+  resetPlayer() {
+    const lastPlaybackRate = this.player.playbackRate();
+    const playerConfigTemp = {...this.playerConfig};
+    playerConfigTemp.startTime = Math.round(this.player.currentTime());
+    playerConfigTemp.lastPlaybackRate = lastPlaybackRate;
+    this.playerConfigData = playerConfigTemp;
+    // console.log('this.playerConfig: ', this.playerConfig.startTime);
+    this.player.reset();
+    this.player.src(playerConfigTemp.sources);
+    // this.play(playerConfigTemp);
+    if (!playerConfigTemp.autoplay) {
+      setTimeout(() => {
+        this.player.play();
+      }, 500);
+    }
   }
 }
 
@@ -307,6 +344,7 @@ interface PlayerConfig {
   responsive: boolean;
   defaultQuality: string;
   forwardBackward: boolean;
+  lastPlaybackRate: number;
 }
 
 class PlayerConfig {
@@ -325,6 +363,7 @@ class PlayerConfig {
   watermark: { text: string, link: string, imageUrl: string };
   seekButtons: boolean;
   seekSeconds: number;
+  lastPlaybackRate: number;
 
   constructor(config, playerCache?) {
     const data = config || {};
@@ -344,6 +383,7 @@ class PlayerConfig {
     this.watermark = data.watermark || {};
     this.seekButtons = data.seekButtons || false;
     this.seekSeconds = data.seekSeconds || 10;
+    this.lastPlaybackRate = data.lastPlaybackRate || 1;
 
   }
 }
