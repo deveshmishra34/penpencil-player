@@ -167,18 +167,49 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.player.requestFullscreen();
     }
 
+    // this.player.on('error', (_, error) => {
+    //   console.log('error: ', _, error);
+    // });
+
     this.player.on('error', (error) => {
       console.log('error: ', error);
     });
 
+    this.player.on('changePlaybackRate', (_, speed) => {
+      // console.log('speed: ', speed);
+      if (this.networkDetectionService.resetPlayerTimer) {
+        this.setResetPlayer(speed.item);
+      }
+    });
+
     this.player.on('play', () => {
-      if (this.playerConfigData.startTime > 0) {
+      const networkState = this.player.networkState();
+      const readyState = this.player.readyState();
+      const seeking = this.player.seeking();
+
+      if (this.playerConfigData.startTime > 0 && !seeking) {
         this.setCurrentTime(this.playerConfigData.startTime);
       }
 
       this.setPlaybackRate(this.playerConfigData.lastPlaybackRate);
       this.onPlay.emit(this.getPlayerInfo());
+
+      console.log('networkState: ', networkState);
+      console.log('readyState: ', readyState);
+      console.log('seeking: ', seeking);
+
+      // console.log('this.networkDetectionService.resetPlayerTimer: ', this.networkDetectionService.resetPlayerTimer);
+      if (seeking && this.networkDetectionService.resetPlayerTimer) {
+        this.setResetPlayer();
+      }
     });
+
+    // this.player.on('timeupdate', (_, timeupdate) => {
+    //   console.log('timeupdate: ', _, timeupdate);
+    // });
+    // videojs.on(this.player, 'timeupdate', (data) => {
+    //   console.log('timeupdate: ', data);
+    // });
 
     this.player.on('pause', () => {
       this.onPause.emit(this.getPlayerInfo());
@@ -238,14 +269,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       const hasNetworkConnection = currentState.hasNetworkConnection;
       const hasInternetAccess = currentState.hasInternetAccess;
       if (hasNetworkConnection && hasInternetAccess) {
-        const playerBuffered = Math.round(this.player.bufferedEnd());
-        const currentTime = Math.round(this.player.currentTime());
-        let resetAfter = (playerBuffered - currentTime) * 1000 || 0;
-        console.log(currentTime, playerBuffered, resetAfter);
-        if (!resetAfter) {
-          resetAfter = 1000;
-        }
-        this.networkDetectionService.setResetPlayer(currentTime, resetAfter);
+        this.setResetPlayer();
       }
       // else {
       // this.player.trigger('error', {});
@@ -267,6 +291,23 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
   }
 
+  setResetPlayer(playbackRate?) {
+    const lastPlaybackRate = playbackRate || this.player.playbackRate();
+    const playerBuffered = Math.round(this.player.bufferedEnd());
+    const currentTime = Math.round(this.player.currentTime());
+    let resetAfter = (playerBuffered - currentTime) * 1000 || 0;
+    console.log(currentTime, playerBuffered, resetAfter);
+    if (!resetAfter) {
+      resetAfter = 1000;
+    }
+    const data = {
+      resetAfter,
+      lastPlaybackRate: lastPlaybackRate * 1000
+    };
+    // console.log('data: ', data);
+    this.networkDetectionService.setResetPlayer(data);
+  }
+
   resetPlayer() {
     const lastPlaybackRate = this.player.playbackRate();
     const playerConfigTemp = {...this.playerConfig};
@@ -274,7 +315,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     playerConfigTemp.lastPlaybackRate = lastPlaybackRate;
     this.playerConfigData = playerConfigTemp;
     // console.log('this.playerConfig: ', this.playerConfig.startTime);
-    this.player.reset();
+    // this.player.reset();
     this.player.src(playerConfigTemp.sources);
     // this.play(playerConfigTemp);
     if (!playerConfigTemp.autoplay) {

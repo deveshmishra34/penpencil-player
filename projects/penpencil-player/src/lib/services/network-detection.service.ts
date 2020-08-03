@@ -15,7 +15,7 @@ export class NetworkDetectionService implements OnDestroy {
   };
   private stateChangeEventEmitter = new EventEmitter<ConnectionState>();
 
-  private resetPlayerTimer;
+  resetPlayerTimer;
   private resetPlayerSub: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor() {
@@ -67,17 +67,19 @@ export class NetworkDetectionService implements OnDestroy {
       );
   }
 
-  setResetPlayer(startTime, resetTime) {
+  setResetPlayer(data) {
+    let resetTime = data.resetAfter;
+    const lastPlaybackRate = data.lastPlaybackRate;
     this.clearTimer();
     // this.resetPlayerTimer = setTimeout(() => {
     //   this.resetPlayerSub.next(true);
     // }, resetTime);
     this.resetPlayerTimer = setInterval(() => {
       console.log(resetTime);
-      resetTime = resetTime - 1000;
-      if (resetTime === 0) {
+      resetTime = resetTime - lastPlaybackRate;
+      if (resetTime <= 0) {
         this.clearTimer();
-        this.resetPlayerSub.next({success: true, startTime});
+        this.resetPlayerSub.next({success: true});
       }
     }, 1000);
   }
@@ -86,6 +88,7 @@ export class NetworkDetectionService implements OnDestroy {
     if (this.resetPlayerTimer) {
       // clearTimeout(this.resetPlayerTimer);
       clearInterval(this.resetPlayerTimer);
+      this.resetPlayerTimer = null;
     }
   }
 
