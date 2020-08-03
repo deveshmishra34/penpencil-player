@@ -182,12 +182,15 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       }
     });
 
+
+
     this.player.on('play', () => {
       const networkState = this.player.networkState();
       const readyState = this.player.readyState();
       const seeking = this.player.seeking();
+      const currentTime = Math.round(this.player.currentTime());
 
-      if (this.playerConfigData.startTime > 0 && !seeking) {
+      if (this.playerConfigData.startTime > 0 && currentTime !== this.playerConfigData.startTime && this.playerConfigData.startTime > currentTime && !seeking) {
         this.setCurrentTime(this.playerConfigData.startTime);
       }
 
