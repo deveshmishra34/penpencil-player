@@ -95,10 +95,12 @@ export class AppComponent {
       this.playerConfig = {
         poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
         liveui: false,
-        sources: this.enrcyptedSources,
+        sources: this.sourcesHls,
         autoplay: false,
-        startTime: 10,
-        fluid: true, // fluid, fill, responsive
+        startTime: 0,
+        fluid: true,
+        fill: false,
+        responsive: false,
         fullScreenEnabled: false,
         seekButtons: true,
         seekSeconds: 30,

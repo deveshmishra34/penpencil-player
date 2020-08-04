@@ -104,7 +104,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
           overrideNative: true,
           enableLowInitialPlaylist: false
         },
-        nativeVideoTracks: false,
         nativeAudioTracks: false,
         nativeTextTracks: false
       },
@@ -119,11 +118,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       controlBar: {
         children: this.playerControls
       },
-      inactivityTimeout: 3000,
+      inactivityTimeout: 5000,
       preload: 'auto',
       controls: true,
       autoplay: this.playerConfigData.autoplay,
-      currentTimeDisplay: true,
+      // currentTimeDisplay: true,
       youtube: {
         ytControls: 0,
         enablePrivacyEnhancedMode: true
