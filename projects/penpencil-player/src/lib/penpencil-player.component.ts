@@ -175,7 +175,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
 
     this.player.on('changePlaybackRate', (_, speed) => {
-      // console.log('speed: ', speed);
+      this.playerConfigData.lastPlaybackRate = speed.item;
       if (this.networkDetectionService.resetPlayerTimer) {
         this.setResetPlayer(speed.item);
       }
@@ -193,12 +193,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         this.setCurrentTime(this.playerConfigData.startTime);
       }
 
+      // console.log('this.playerConfigData: ', this.playerConfigData)
       this.setPlaybackRate(this.playerConfigData.lastPlaybackRate);
       this.onPlay.emit(this.getPlayerInfo());
 
-      console.log('networkState: ', networkState);
-      console.log('readyState: ', readyState);
-      console.log('seeking: ', seeking);
+      // console.log('networkState: ', networkState);
+      // console.log('readyState: ', readyState);
+      // console.log('seeking: ', seeking);
 
       // console.log('this.networkDetectionService.resetPlayerTimer: ', this.networkDetectionService.resetPlayerTimer);
       if (seeking && this.networkDetectionService.resetPlayerTimer) {
@@ -298,7 +299,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     const playerBuffered = Math.round(this.player.bufferedEnd());
     const currentTime = Math.round(this.player.currentTime());
     let resetAfter = (playerBuffered - currentTime) * 1000 || 0;
-    console.log(currentTime, playerBuffered, resetAfter);
+    // console.log(currentTime, playerBuffered, resetAfter);
     if (!resetAfter) {
       resetAfter = 1000;
     }

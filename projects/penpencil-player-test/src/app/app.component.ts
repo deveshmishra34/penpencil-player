@@ -15,12 +15,35 @@ export class AppComponent {
   // KEY = '06ca4d2cf39b2008faf65093d452c6a0';
   player: any;
 
-  sourcesMop4 = [
+  sourcesMp4 = [
     {
-      src: 'https://player.vimeo.com/external/441851343.sd.mp4?s=da06cda32a378c9a35e9b0c5509c0da4d33f6ab1&profile_id=139&oauth2_token_id=1349487470',
+      src: 'https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=139&oauth2_token_id=1289522162',
       type: 'video/mp4',
-      label: '480'
+      label: '240'
     },
+    {
+      src: 'https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=164&oauth2_token_id=1289522162',
+      type: 'video/mp4',
+      label: '360'
+    },
+    {
+      src: 'https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=165&oauth2_token_id=1289522162',
+      type: 'video/mp4',
+      label: '540'
+    },
+    {
+      src: 'https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=174&oauth2_token_id=1289522162',
+      type: 'video/mp4',
+      label: '720'
+    },
+    {
+      src: 'https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=175&oauth2_token_id=1289522162',
+      type: 'video/mp4',
+      label: '1080'
+    }
+  ];
+
+  sourcesMop4 = [
     {
       src: 'https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=165&oauth2_token_id=1289522162',
       type: 'video/mp4',
@@ -75,7 +98,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://player.vimeo.com/external/438913176.m3u8?s=6616690f97c4886c5f117c0831a14c865663fca3',
+      src: 'http://tatacdndemo.pc.cdn.bitgravity.com/tatacdndemo/live/amlst:Feed1_,b600,.smil/playlist.m3u8',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
@@ -92,25 +115,25 @@ export class AppComponent {
 
   constructor() {
     // setTimeout(() => {
-      this.playerConfig = {
-        poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
-        liveui: false,
-        sources: this.sourcesHls,
-        autoplay: false,
-        startTime: 0,
-        fluid: true,
-        fill: false,
-        responsive: false,
-        fullScreenEnabled: false,
-        seekButtons: true,
-        seekSeconds: 30,
-        // defaultQuality: '360', // auto|240|360...
-        watermark: {
-          url: '',
-          image: '',
-          text: '8888888888'
-        }
-      };
+    this.playerConfig = {
+      poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
+      liveui: true,
+      sources: this.sourcesDash,
+      autoplay: false,
+      startTime: 0,
+      fluid: true,
+      fill: false,
+      responsive: false,
+      fullScreenEnabled: false,
+      seekButtons: true,
+      seekSeconds: 30,
+      defaultQuality: '360', // auto|240|360...
+      watermark: {
+        url: '',
+        image: '',
+        text: '8888888888'
+      }
+    };
     // }, 5000);
 
     // setTimeout(() => {
@@ -137,11 +160,11 @@ export class AppComponent {
   }
 
   play(data) {
-    console.log('Playing', data);
+    // console.log('Playing', data);
   }
 
   fullScreen(data) {
-    console.log('fullScreen', data);
+    // console.log('fullScreen', data);
   }
 
   initializePlayer(dataa) {

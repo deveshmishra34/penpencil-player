@@ -1,7 +1,7 @@
 {
   "name": "penpencil-player",
   "description": "PenpencilPlayer is HTML5 video player based ob videjs library. It gathers all the neccessory plugins or library at single place to play videos like:- Vimeo, Youtube , hls (m3us). PenpencilPlayer require angular v6 or above.",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": "Devesh kumar mishra",
   "license": "MIT",
   "keywords": [
