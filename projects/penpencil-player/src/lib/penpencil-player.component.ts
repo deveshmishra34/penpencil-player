@@ -190,6 +190,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       const currentTime = Math.round(this.player.currentTime());
 
       if (this.playerConfigData.startTime > 0 && currentTime !== this.playerConfigData.startTime && this.playerConfigData.startTime > currentTime && !seeking) {
+        this.playerConfigData.startTime = Math.round(this.playerConfigData.startTime);
         this.setCurrentTime(this.playerConfigData.startTime);
       }
 
@@ -413,7 +414,7 @@ class PlayerConfig {
     this.sources = data.sources || [];
     this.type = data.type || 'application/x-mpegURL';
     this.autoplay = data.autoplay || false;
-    this.startTime = data.startTime || 0;
+    this.startTime = Math.round(data.startTime) || 0;
     this.fullScreenEnabled = data.fullScreenEnabled || false;
     this.fluid = data.fluid || false;
     this.fill = data.fill || false;
