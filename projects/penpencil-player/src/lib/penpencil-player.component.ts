@@ -182,7 +182,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
 
 
-
     this.player.on('play', () => {
       const networkState = this.player.networkState();
       const readyState = this.player.readyState();
@@ -226,6 +225,30 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.player.on('fullscreenchange', () => {
       this.onFullscreenchange.emit(this.getPlayerInfo());
     });
+
+    if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
+      this.player.on('loadstart', (e) => {
+        if (this.playerConfigData.encryptionUri) {
+          this.player.tech().hls.xhr.beforeRequest = (options) => {
+
+            if (options.uri.includes('key://') && this.playerConfigData.encryptionUri) {
+              const key = options.uri.replace('key://', '');
+              options.uri = this.playerConfigData.encryptionUri + '&key=' + key;
+
+              if (this.playerConfigData.headers && this.playerConfigData.headers.length) {
+                const headers = options.headers || {};
+                for (let i = 0; i < this.playerConfigData.headers.length; i++) {
+                  Object.assign(headers, this.playerConfigData.headers[i]);
+                }
+
+                options.headers = headers;
+              }
+            }
+          };
+        }
+      });
+    }
+
   }
 
   ngOnDestroy() {
@@ -378,6 +401,8 @@ interface PlayerConfig {
   sources: Array<any>;
   type: string;
   autoplay: boolean;
+  encryptionUri: string;
+  headers: Array<any>;
   startTime: number;
   fullScreenEnabled: boolean;
   fluid: boolean;
@@ -394,6 +419,8 @@ class PlayerConfig {
   sources: Array<any>;
   type: string;
   autoplay: boolean;
+  encryptionUri: string;
+  headers: Array<any>;
   startTime: number;
   fullScreenEnabled: boolean;
   fluid: boolean;
@@ -414,6 +441,8 @@ class PlayerConfig {
     this.sources = data.sources || [];
     this.type = data.type || 'application/x-mpegURL';
     this.autoplay = data.autoplay || false;
+    this.encryptionUri = data.encryptionUri || '';
+    this.headers = data.headers || '';
     this.startTime = Math.round(data.startTime) || 0;
     this.fullScreenEnabled = data.fullScreenEnabled || false;
     this.fluid = data.fluid || false;

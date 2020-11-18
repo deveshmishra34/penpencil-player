@@ -10,7 +10,7 @@ export class AppComponent {
 
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
-  KEY = '18ee65047edb659e7d646810e8e49a4f';
+  KEY = '3a035a7bc1e0fbd323c7215f44cc2fac';
   // KEY = '4ad6bce3b56a00a4476c8a05e518e4a3';
   // KEY = '06ca4d2cf39b2008faf65093d452c6a0';
   player: any;
@@ -62,13 +62,14 @@ export class AppComponent {
   ];
 
   sourcesDash = [{
-    src: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/7592bc9f-c9e1-46d7-9925-0ea7d375d6114/master.mpd',
     type: 'application/dash+xml'
   }];
 
   // enrcyptedSources getLicense function will only work in localhost and secured url (https)
   enrcyptedSources = [{
-    src: 'https://penpencil.pc.cdn.bitgravity.com/b6ed9a93-5900-4904-86c8-514a5d2e4c16/master.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/ff6c7230-60e7-4ace-a50d-922c213bc86c/master.mpd',
+    // src: 'http://localhost:9000/240/master_240.mpd',
     type: 'application/dash+xml',
     keySystems: {
       'org.w3.clearkey': {
@@ -98,7 +99,16 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'http://tatacdndemo.pc.cdn.bitgravity.com/tatacdndemo/live/amlst:Feed1_,b600,.smil/playlist.m3u8',
+      src: 'https://penpencil.pc.cdn.bitgravity.com/ff6c7230-60e7-4ace-a50d-922c213bc86c/master.m3u8',
+      type: 'application/x-mpegURL',
+      withCredentials: false,
+      cacheEncryptionKeys: true
+    }
+  ];
+
+  encryptedSourcesHls = [
+    {
+      src: 'https://penpencil-videos.sgp1.cdn.digitaloceanspaces.com/05e329c6-6476-4f22-aabf-1e64963fcb9f/master.m3u8',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
@@ -117,8 +127,14 @@ export class AppComponent {
     // setTimeout(() => {
     this.playerConfig = {
       poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
-      liveui: true,
-      sources: this.sourcesDash,
+      liveui: false,
+      sources: this.sourcesHls,
+      encryptionUri: 'http://localhost:8000/v1/videos/get-hls-key?videoId=5fb4b97a25e8a529888f9f13',
+      headers: [
+        {
+          authorization: 'Bearer 14fe4f2003f7633b6366a660fb30200f5f95218ef52272b50644fa023ce245ea'
+        }
+      ],
       autoplay: false,
       startTime: 0,
       fluid: true,
@@ -161,6 +177,14 @@ export class AppComponent {
 
   play(data) {
     // console.log('Playing', data);
+  }
+
+  pause(data) {
+    // console.log('Pause', data);
+  }
+
+  ended(data) {
+    // console.log('Ended', data);
   }
 
   fullScreen(data) {

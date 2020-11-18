@@ -1,5 +1,5 @@
 <div style="width: 100%; height: 100vh"  *ngIf="playerConfig && playerConfig.sources && playerConfig.sources.length" >
   <rs-penpencil-player (inIt)="initializePlayer($event)"
-                       [playerConfig]="playerConfig" (onPlay)="play($event)"
+                       [playerConfig]="playerConfig" (onPlay)="play($event)" (onPause)="pause($event)" (onEnded)="ended($event)"
                        (onFullscreenchange)="fullScreen($event)"></rs-penpencil-player>
 </div>
