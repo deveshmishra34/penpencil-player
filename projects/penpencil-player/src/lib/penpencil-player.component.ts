@@ -229,22 +229,27 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
       this.player.on('loadstart', (e) => {
         if (this.playerConfigData.encryptionUri) {
-          this.player.tech().hls.xhr.beforeRequest = (options) => {
+          const vhs = this.player.tech().hls;
+          if (vhs) {
+            vhs.xhr.beforeRequest = (options) => {
+              // console.log('options: ', options);
+              if (options.uri.includes('key://') && this.playerConfigData.encryptionUri) {
+                const key = options.uri.replace('key://', '');
+                options.uri = this.playerConfigData.encryptionUri + '&key=' + key;
 
-            if (options.uri.includes('key://') && this.playerConfigData.encryptionUri) {
-              const key = options.uri.replace('key://', '');
-              options.uri = this.playerConfigData.encryptionUri + '&key=' + key;
+                if (this.playerConfigData.headers && this.playerConfigData.headers.length) {
+                  const headers = options.headers || {};
+                  for (let i = 0; i < this.playerConfigData.headers.length; i++) {
+                    Object.assign(headers, this.playerConfigData.headers[i]);
+                  }
 
-              if (this.playerConfigData.headers && this.playerConfigData.headers.length) {
-                const headers = options.headers || {};
-                for (let i = 0; i < this.playerConfigData.headers.length; i++) {
-                  Object.assign(headers, this.playerConfigData.headers[i]);
+                  options.headers = headers;
                 }
-
-                options.headers = headers;
               }
-            }
-          };
+            };
+          } else {
+            console.log('VHS does not exist', this.player);
+          }
         }
       });
     }

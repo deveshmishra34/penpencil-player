@@ -10,7 +10,7 @@ export class AppComponent {
 
   url1 = 'https://devnuevo.com/media/video/demo_360.mp4';
   url2 = 'https://devnuevo.com/media/video/demo_720.mp4';
-  KEY = '3a035a7bc1e0fbd323c7215f44cc2fac';
+  KEY = '9f8cdd9acf834a98aa6f902adc020522';
   // KEY = '4ad6bce3b56a00a4476c8a05e518e4a3';
   // KEY = '06ca4d2cf39b2008faf65093d452c6a0';
   player: any;
@@ -68,7 +68,7 @@ export class AppComponent {
 
   // enrcyptedSources getLicense function will only work in localhost and secured url (https)
   enrcyptedSources = [{
-    src: 'https://penpencil.pc.cdn.bitgravity.com/ff6c7230-60e7-4ace-a50d-922c213bc86c/master.mpd',
+    src: 'https://penpencil.pc.cdn.bitgravity.com/c25250fc-d702-4f47-8199-d1efbecabe51/master.mpd',
     // src: 'http://localhost:9000/240/master_240.mpd',
     type: 'application/dash+xml',
     keySystems: {
@@ -99,7 +99,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://penpencil.pc.cdn.bitgravity.com/ff6c7230-60e7-4ace-a50d-922c213bc86c/master.m3u8',
+      src: 'https://penpencil.pc.cdn.bitgravity.com/8f6e8b29-b5cf-4703-9a7f-dc086c4306e4/master.m3u8',
       type: 'application/x-mpegURL',
       withCredentials: false,
       cacheEncryptionKeys: true
@@ -108,7 +108,7 @@ export class AppComponent {
 
   encryptedSourcesHls = [
     {
-      src: 'https://penpencil-videos.sgp1.cdn.digitaloceanspaces.com/05e329c6-6476-4f22-aabf-1e64963fcb9f/master.m3u8',
+      src: 'http://localhost:9000/video/copy/playlist.m3u8',
       type: 'application/x-mpegURL',
       withCredentials: false
     }
@@ -128,11 +128,11 @@ export class AppComponent {
     this.playerConfig = {
       poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
       liveui: false,
-      sources: this.sourcesHls,
-      encryptionUri: 'http://localhost:8000/v1/videos/get-hls-key?videoId=5fb4b97a25e8a529888f9f13',
+      sources: this.enrcyptedSources,
+      encryptionUri: 'https://api-dev.penpencil.xyz/v1/videos/get-hls-key?videoId=5fc48f0fc94dc43a3bf96144',
       headers: [
         {
-          authorization: 'Bearer 14fe4f2003f7633b6366a660fb30200f5f95218ef52272b50644fa023ce245ea'
+          authorization: 'Bearer f9cd6e1687d5168967454b1d9ef1b73a630deb7af0eef65b929fc030b6d541e4'
         }
       ],
       autoplay: false,
@@ -143,7 +143,7 @@ export class AppComponent {
       fullScreenEnabled: false,
       seekButtons: true,
       seekSeconds: 30,
-      defaultQuality: '360', // auto|240|360...
+      defaultQuality: 'Auto', // auto|240|360...
       watermark: {
         url: '',
         image: '',
