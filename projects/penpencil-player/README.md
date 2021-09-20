@@ -80,6 +80,7 @@ playerConfig = {
     seekSeconds: 2, // Add plugin first
     defaultQuality: 'auto', // Auto|'240'|'360'...
     encryptionUri: 'http://localhost:8000/v1/videos/get-hls-key?videoId=videoId', // For Secured HLS only
+    query: '?key=value',
     headers: [
       {
         authorization: 'Bearer 14fe4f2003f7633b6366a660fb30200f5f95218ef52272b50644fa023ce245ea'

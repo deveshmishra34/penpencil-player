@@ -99,7 +99,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://penpencil.pc.cdn.bitgravity.com/8f6e8b29-b5cf-4703-9a7f-dc086c4306e4/master.m3u8',
+      src: 'https://dp935alxc6mi4.cloudfront.net/e16779b8-35c0-4bfe-8765-98a3f3ab3341/master.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoyMTUwNTQ3NDcwfX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=n3aCiG-pAFhjtScSv4BvxEm9jONnoQVKpOHtUmxP3hWa6vvd56RI006mJwcr4gx7u3yTV5foGtGFxBFlD70AkZyucTOGHRvvWbU8oG8k1JSWmXOwDBGTsjZSsheC37-c9aIfseHgMzFOt4-yg~NjT8uazmY-k7zm9AaAI1jOYmgXR9abAPFSshFJcFv6w4OFytNiAqqiKw6pFyWdi3StQH2-DYc-tN3decfg1BIofsys5CykwzcitAapGVZQMq0FHDdvOdFTdymaZwePeD0xkrsyoGgxLAUbcn55OoZefMgAF7NLxd3zWmTPTr3j9C-xRUG9Zvb8AAYAqvynus9o8A__',
       type: 'application/x-mpegURL',
       withCredentials: false,
       cacheEncryptionKeys: true
@@ -123,18 +123,24 @@ export class AppComponent {
 
   playerConfig: any;
 
+// {
+//   "CloudFront-": "",
+//   "CloudFront-": "",
+//   "CloudFront-": ""
+// }
   constructor() {
     // setTimeout(() => {
     this.playerConfig = {
       poster: 'https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad',
       liveui: false,
-      sources: this.enrcyptedSources,
+      sources: this.sourcesHls,
       encryptionUri: 'https://api-dev.penpencil.xyz/v1/videos/get-hls-key?videoId=5fc48f0fc94dc43a3bf96144',
       headers: [
         {
           authorization: 'Bearer f9cd6e1687d5168967454b1d9ef1b73a630deb7af0eef65b929fc030b6d541e4'
         }
       ],
+      query: '?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjM3MzI0ODYzfX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=Eb4QlKxDOhWc5J8oDnXkevuymXzBgNu2T~L01IVSBqMIo0v0WO25PusTvx4n7Hh8-Rd~-bEwjO4WsNA264vrJBox4tP~gLLwcIB1YgxasyuAKhZppGJ1hokkxhAPwD77IF2vZeXfRggyB-aBxzouPlBoGMVkN3EUihjcc3jQJPDSaCUPvJSs3PVVrq0QIDCRnzBkjl9S32AaoA1ecFbZYL87Ztq156Zs8SVhKV5ZtglpLtoquqcuH7tU1e4kzTXC4dCo5Wn3ai7uL43ViCNBqbCHmV01z9qqm326GWOtPyQO8LBeCabUd6XXlM5Owy4B1emnmNAy4Ssy5~JSDPS7bA__',
       autoplay: false,
       startTime: 0,
       fluid: true,

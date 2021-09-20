@@ -226,13 +226,34 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.onFullscreenchange.emit(this.getPlayerInfo());
     });
 
-    if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
+    // if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
       this.player.on('loadstart', (e) => {
-        if (this.playerConfigData.encryptionUri) {
-          const vhs = this.player.tech().hls;
-          if (vhs) {
-            vhs.xhr.beforeRequest = (options) => {
-              // console.log('options: ', options);
+
+        const vhs = this.player.tech().hls;
+        if (vhs) {
+          vhs.xhr.beforeRequest = (options) => {
+
+            if (this.playerConfigData.query) {
+              if (this.playerConfigData.query[0] !== '?') {
+                this.playerConfigData.query = '?' + this.playerConfigData.query;
+              }
+
+              if (options.uri.includes('v1/videos/get-hls-key?videoKey=')) {
+                const videoUrl = this.playerConfigData.sources[0].src;
+                const videoUrlArr = videoUrl.split('?')[0].split('/');
+                const videoHost = videoUrlArr.slice(0, 3).join('/') + '/';
+                const videoKey = videoUrlArr.slice(3).join('/');
+                // console.log('options.uri', options.uri, videoHost, videoKey.replace('master.m3u8', '/hls/enc.key'));
+                options.uri = videoHost + videoKey.replace('master.m3u8', 'hls/enc.key');
+              }
+
+              if (!options.uri.includes('Policy') && !options.uri.includes('Policy') && !options.uri.includes('Policy')) {
+                options.uri = options.uri + this.playerConfigData.query;
+              }
+
+            }
+
+            if (this.playerConfigData.encryptionUri) {
               if (options.uri.includes('key://') && this.playerConfigData.encryptionUri) {
                 const key = options.uri.replace('key://', '');
                 options.uri = this.playerConfigData.encryptionUri + '&key=' + key;
@@ -246,13 +267,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
                   options.headers = headers;
                 }
               }
-            };
-          } else {
-            console.log('VHS does not exist', this.player);
+            } else {
+              console.log('VHS does not exist', this.player);
+            }
           }
         }
       });
-    }
+    // }
 
   }
 
@@ -407,6 +428,7 @@ interface PlayerConfig {
   type: string;
   autoplay: boolean;
   encryptionUri: string;
+  query: string;
   headers: Array<any>;
   startTime: number;
   fullScreenEnabled: boolean;
@@ -425,6 +447,7 @@ class PlayerConfig {
   type: string;
   autoplay: boolean;
   encryptionUri: string;
+  query: string;
   headers: Array<any>;
   startTime: number;
   fullScreenEnabled: boolean;
@@ -447,6 +470,7 @@ class PlayerConfig {
     this.type = data.type || 'application/x-mpegURL';
     this.autoplay = data.autoplay || false;
     this.encryptionUri = data.encryptionUri || '';
+    this.query = data.query || '';
     this.headers = data.headers || '';
     this.startTime = Math.round(data.startTime) || 0;
     this.fullScreenEnabled = data.fullScreenEnabled || false;
