@@ -267,9 +267,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
                   options.headers = headers;
                 }
               }
-            } else {
-              console.log('VHS does not exist', this.player);
             }
+            // else {
+            //   console.log('VHS does not exist', this.player);
+            // }
           }
         }
       });
