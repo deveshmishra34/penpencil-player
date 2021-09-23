@@ -99,7 +99,7 @@ export class AppComponent {
 
   sourcesHls = [
     {
-      src: 'https://dp935alxc6mi4.cloudfront.net/e16779b8-35c0-4bfe-8765-98a3f3ab3341/master.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjMyMTU1ODQ2fX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=UZKn0iItuVQfk2qVeObahTaSjZXtBuQExoJEkJjx218IEPyzr9yRCqvvl8EeK8ywF3UGDe3dJFp-3SjDO4y3VCk6FLw4frgcMCYF7pYn1EBMgltJtn8SNS-V~SoudXyPTQjpxU4bHtOnCVGFL3adNdiyxjhSMIpruYN5~v5NSBgRF3158XbMGy~Rszx3I9FBijsfK-bVUOCvr9t8iMplrJTJqealI-2KkyZBwq5nArfDDJ~wAjDd68lW0AgvnGmuV5W-uqivtyeNNz1IPffZpZacR4MIJjCsRmC~d~zKkHQhR4QTBbyUudE9zrL4GYRu-0WZPD8IO7AUBRmuvXCbug__',
+      src: 'https://dfj9i4qx2jg7e.cloudfront.net/index.m3u8?start=1632381600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kZmo5aTRxeDJqZzdlLmNsb3VkZnJvbnQubmV0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2MzI0MDMxNzd9fX1dfQ__&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=K2sw-vBym5pD5PR8O9sAVgAOWy-RsYaqhEzxukOQ4L2JTu7ZKyDgZfO0uHA9EmhZTdIbZ~SWNDyMUMC7Jkp~-M1U0Mj6DeQVl1xDhl4N7OCpPbGPB6hpCUdkOUgCs1dIQzqZ499oHELdr~Kb36MBmk2ZE1YM~CqlRd33g2J~LsLOuNUdhu8NS~KRQcDL4uKWc8V4I~6aSY~TfZvp73Y1I9CDFsVNk4QRamhIaz2gxYtKbXXj4DZ~9Jsh2rpt-6T~PeE8VX5ldAPYzZ9wCxQn7yV6QDZmphciAH3yp21P1sf9CVBuMhaql-WxPxgfjSH-ikm2kxFnwcICyXRkqYEhCA__&end=1632383400',
       type: 'application/x-mpegURL',
       withCredentials: false,
       cacheEncryptionKeys: true
@@ -137,10 +137,10 @@ export class AppComponent {
       encryptionUri: 'https://api-dev.penpencil.xyz/v1/videos/get-hls-key?videoId=5fc48f0fc94dc43a3bf96144',
       headers: [
         {
-          authorization: 'Bearer f9cd6e1687d5168967454b1d9ef1b73a630deb7af0eef65b929fc030b6d541e4'
+          Cookie: 'CloudFront-Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ; CloudFront-Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjMyMTU1ODQ2fX19XX0_; CloudFront-Signature=UZKn0iItuVQfk2qVeObahTaSjZXtBuQExoJEkJjx218IEPyzr9yRCqvvl8EeK8ywF3UGDe3dJFp-3SjDO4y3VCk6FLw4frgcMCYF7pYn1EBMgltJtn8SNS-V~SoudXyPTQjpxU4bHtOnCVGFL3adNdiyxjhSMIpruYN5~v5NSBgRF3158XbMGy~Rszx3I9FBijsfK-bVUOCvr9t8iMplrJTJqealI-2KkyZBwq5nArfDDJ~wAjDd68lW0AgvnGmuV5W-uqivtyeNNz1IPffZpZacR4MIJjCsRmC~d~zKkHQhR4QTBbyUudE9zrL4GYRu-0WZPD8IO7AUBRmuvXCbug__'
         }
       ],
-      query: '?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjMyMTU1ODQ2fX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=UZKn0iItuVQfk2qVeObahTaSjZXtBuQExoJEkJjx218IEPyzr9yRCqvvl8EeK8ywF3UGDe3dJFp-3SjDO4y3VCk6FLw4frgcMCYF7pYn1EBMgltJtn8SNS-V~SoudXyPTQjpxU4bHtOnCVGFL3adNdiyxjhSMIpruYN5~v5NSBgRF3158XbMGy~Rszx3I9FBijsfK-bVUOCvr9t8iMplrJTJqealI-2KkyZBwq5nArfDDJ~wAjDd68lW0AgvnGmuV5W-uqivtyeNNz1IPffZpZacR4MIJjCsRmC~d~zKkHQhR4QTBbyUudE9zrL4GYRu-0WZPD8IO7AUBRmuvXCbug__',
+      query: '?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kZmo5aTRxeDJqZzdlLmNsb3VkZnJvbnQubmV0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2MzI0MDMxNzd9fX1dfQ__&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=K2sw-vBym5pD5PR8O9sAVgAOWy-RsYaqhEzxukOQ4L2JTu7ZKyDgZfO0uHA9EmhZTdIbZ~SWNDyMUMC7Jkp~-M1U0Mj6DeQVl1xDhl4N7OCpPbGPB6hpCUdkOUgCs1dIQzqZ499oHELdr~Kb36MBmk2ZE1YM~CqlRd33g2J~LsLOuNUdhu8NS~KRQcDL4uKWc8V4I~6aSY~TfZvp73Y1I9CDFsVNk4QRamhIaz2gxYtKbXXj4DZ~9Jsh2rpt-6T~PeE8VX5ldAPYzZ9wCxQn7yV6QDZmphciAH3yp21P1sf9CVBuMhaql-WxPxgfjSH-ikm2kxFnwcICyXRkqYEhCA__',
       autoplay: false,
       startTime: 0,
       fluid: true,

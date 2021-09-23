@@ -121,6 +121,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       inactivityTimeout: 5000,
       preload: 'auto',
       controls: true,
+      liveui: !!(this.playerConfigData.liveui),
       autoplay: this.playerConfigData.autoplay,
       // currentTimeDisplay: true,
       youtube: {
@@ -234,23 +235,30 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
           vhs.xhr.beforeRequest = (options) => {
 
             if (this.playerConfigData.query) {
+              let URI = options.uri;
               if (this.playerConfigData.query[0] !== '?') {
                 this.playerConfigData.query = '?' + this.playerConfigData.query;
               }
 
-              if (options.uri.includes('v1/videos/get-hls-key?videoKey=')) {
+              if (URI.split('?').length > 1) {
+                URI = URI.split('?')[0] + this.playerConfigData.query + '&' + URI.split('?')[1];
+              }
+
+              if (URI.includes('v1/videos/get-hls-key?videoKey=')) {
                 const videoUrl = this.playerConfigData.sources[0].src;
                 const videoUrlArr = videoUrl.split('?')[0].split('/');
                 const videoHost = videoUrlArr.slice(0, 3).join('/') + '/';
                 const videoKey = videoUrlArr.slice(3).join('/');
                 // console.log('options.uri', options.uri, videoHost, videoKey.replace('master.m3u8', '/hls/enc.key'));
-                options.uri = videoHost + videoKey.replace('master.m3u8', 'hls/enc.key');
+                URI = videoHost + videoKey.replace('master.m3u8', 'hls/enc.key');
               }
 
-              if (!options.uri.includes('Policy') && !options.uri.includes('Policy') && !options.uri.includes('Policy')) {
-                options.uri = options.uri + this.playerConfigData.query;
+              // console.log('policy check');
+              if (!URI.includes('Policy') && !URI.includes('Policy') && !URI.includes('Policy')) {
+                URI = options.uri + this.playerConfigData.query;
               }
 
+              options.uri = URI;
             }
 
             if (this.playerConfigData.encryptionUri) {
