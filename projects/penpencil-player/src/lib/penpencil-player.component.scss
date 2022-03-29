@@ -2,6 +2,13 @@
   color: #555555;
 }
 
+.vjs-liveui-display {
+  .vjs-control-text {
+    display: none !important;
+  }
+}
+
+
 .vjs-theme-city {
   --vjs-theme-city--primary: #bf3b4d;
   --vjs-theme-city--secondary: #fff;

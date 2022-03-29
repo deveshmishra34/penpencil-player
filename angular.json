@@ -77,6 +77,7 @@
               "videojs-seek-buttons/videojs-seek-buttons.min.js",
               "videojs-setting-menu/videojs-setting-menu.min.js",
               "videojs-watermark/videojs-watermark.js",
+              "videojs-hotkeys/videojs-hotkeys.min.js",
               "videojs-liveui/videojs-liveui.min.js"
             ]
           },

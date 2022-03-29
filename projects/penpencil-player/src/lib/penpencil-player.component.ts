@@ -111,7 +111,12 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         nativeTextTracks: false
       },
       plugins: {
-        eme: {}
+        eme: {},
+        hotkeys: {
+          volumeStep: 0.2,
+          seekStep: this.playerConfigData.seekSeconds,
+          enableModifiersForNumbers: false
+        }
       },
       poster: this.playerConfigData.poster,
       fill: this.playerConfigData.fill,
