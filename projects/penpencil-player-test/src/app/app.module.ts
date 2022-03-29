@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {PenpencilPlayerModule} from 'penpencil-player';
+import { PenpencilPlayerModule } from 'projects/penpencil-player/src/public-api';
 
 @NgModule({
   declarations: [

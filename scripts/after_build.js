@@ -15,7 +15,8 @@ async function moveFiles() {
       'videojs-setting-menu/videojs-setting-menu.min.js',
       'videojs-watermark/videojs-watermark.css',
       'videojs-watermark/videojs-watermark.js',
-      'videojs-youtube/videojs-youtube.min.js'
+      'videojs-youtube/videojs-youtube.min.js',
+      'videojs-hotkeys/videojs-hotkeys.min.js',
     ];
 
     repoFiles.forEach((item) => {
