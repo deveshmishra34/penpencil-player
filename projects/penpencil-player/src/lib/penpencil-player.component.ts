@@ -28,6 +28,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   @Output() onPlay: EventEmitter<any> = new EventEmitter<any>();
   @Output() onPause: EventEmitter<any> = new EventEmitter();
   @Output() onEnded: EventEmitter<any> = new EventEmitter();
+  @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onFullscreenchange: EventEmitter<any> = new EventEmitter();
 
   private player: any;
@@ -36,7 +37,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private playerControls: any;
   private networkDetectionSubs: Subscription;
   private playerResetSubs: Subscription;
-  hotkeys: any;
+  private MAX_RETRY = 50;
+  private RETRY = 0;
 
   constructor(
     private networkDetectionService: NetworkDetectionService
@@ -142,6 +144,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       liveui: !!(this.playerConfigData.liveui),
       autoplay: this.playerConfigData.autoplay,
       // currentTimeDisplay: true,
+      errorDisplay: true,
+      loadingSpinner: true,
+      bigPlayButton: true,
       youtube: {
         ytControls: 0,
         enablePrivacyEnhancedMode: true
@@ -161,17 +166,17 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       defaultQuality: this.playerConfig.defaultQuality
     });
 
+    this.player.bigPlayButton.hide();
+
     if (this.playerConfigData.seekButtons) {
       this.player.seekButtons({
         forward: {
           direction: 'forward',
-          seconds: this.playerConfigData.seekSeconds,
-
+          seconds: this.playerConfigData.seekSeconds
         },
         backward: {
           direction: 'backward',
-          seconds: this.playerConfigData.seekSeconds,
-
+          seconds: this.playerConfigData.seekSeconds
         }
       });
     }
@@ -181,7 +186,19 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     }
   }
 
-
+  retryInitPlayer() {
+    if (this.RETRY === this.MAX_RETRY) {
+      this.player.errorDisplay = true;
+      console.log('Maximum Reached  retry');
+      return;
+    }
+    console.log('RETRY' + this.RETRY);
+    this.player.error(null);
+    setTimeout(() => {
+      this.play(this.playerConfig);
+      this.RETRY++;
+    }, 500);
+  }
 
   private callBacks() {
 
@@ -194,6 +211,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     // });
 
     this.player.on('error', (error) => {
+      this.onError.emit(error);
+      // this.player.preventDefault();
+      this.retryInitPlayer();
       console.log('error: ', error);
     });
 
@@ -241,6 +261,12 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.onPause.emit(this.getPlayerInfo());
     });
 
+    this.player.on('ready', () => {
+      this.player.play();
+      this.player.bigPlayButton.show();
+      console.log('ready', this.player.ready());
+    });
+
     this.player.on('ended', () => {
       this.onEnded.emit(this.getPlayerInfo());
     });
@@ -250,7 +276,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     });
 
     // if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
-      this.player.on('loadstart', (e) => {
+    this.player.on('loadstart', (e) => {
 
         const vhs = this.player.tech().hls;
         if (vhs) {
@@ -301,7 +327,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
             // else {
             //   console.log('VHS does not exist', this.player);
             // }
-          }
+          };
         }
       });
     // }
