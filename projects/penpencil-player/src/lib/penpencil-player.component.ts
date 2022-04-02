@@ -86,6 +86,12 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         progressControl: {},
         liveui: {},
         fullscreenToggle: {},
+        volumePanel: {
+          inline: false,
+          volumeControl: {
+            vertical: true,
+          }
+        }
       };
     } else {
       this.playerControls = {
@@ -93,7 +99,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         currentTimeDisplay: {},
         progressControl: {},
         durationDisplay: {},
-        fullscreenToggle: {}
+        fullscreenToggle: {},
+        volumePanel: {
+          inline: false,
+          volumeControl: {
+            vertical: true,
+          }
+        }
       };
     }
   }
@@ -153,11 +165,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.player.seekButtons({
         forward: {
           direction: 'forward',
-          seconds: this.playerConfigData.seekSeconds
+          seconds: this.playerConfigData.seekSeconds,
+
         },
         backward: {
           direction: 'backward',
-          seconds: this.playerConfigData.seekSeconds
+          seconds: this.playerConfigData.seekSeconds,
+
         }
       });
     }
@@ -166,6 +180,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.player.watermark(this.playerConfigData.watermark);
     }
   }
+
+
 
   private callBacks() {
 

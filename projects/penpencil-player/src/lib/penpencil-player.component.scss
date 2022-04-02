@@ -87,21 +87,21 @@
 
   // main control bar
   .vjs-control-bar {
-    background-color: rgba(255, 255, 255, .66);
+    background-color: transparent;
     bottom: .7em;
     height: 40px;
     left: 0;
     position: absolute;
     right: 0;
-    width: 96%;
-    margin: 0 2%;
+    width: 98%;
+    margin: auto;
     border-radius: 5px;
     font-weight: bold;
 
     //.vjs-time-divider
     .vjs-current-time, .vjs-duration {
       display: block;
-      font-size: 1.3em;
+      font-size: 20px;
       font-weight: 500;
       line-height: 40px;
       text-align: center;
@@ -126,13 +126,13 @@
     //play button in control bar
     .vjs-button > .vjs-icon-placeholder::before, .vjs-playback-rate .vjs-playback-rate-value {
       //line-height: 2.3em;
-      font-size: 2.2em;
-      line-height: 1.8em;
+      font-size: 3em;
+      line-height: 1.2em;
     }
 
     .vjs-icon-cog:before,
     .vjs-icon-replay:before {
-      font-size: 2.1em;
+      font-size: 3em;
     }
 
     .vjs-setting-menu-button {
@@ -156,19 +156,19 @@
       //  margin: 0;
       //}
 
-      font-size: 1.6em;
+      font-size: 3em;
       .vjs-play-progress, .vjs-load-progress, .vjs-progress-holder {
         border-radius: 25px;
       }
 
       .vjs-play-progress {
-        background-color: var(--vjs-theme-city--primary);
+        background-color: #5156CF;
       }
 
       //remove the play progress circle
       .vjs-play-progress::before {
         display: block;
-        color: #fff;
+        color: #7B80FF;
       }
     }
 
@@ -251,6 +251,36 @@
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.vjs-control-bar{
+  color: #fff;
+}
+
+.vjs-play-control.vjs-play{
+  content: 'projects/penpencil-player/src/assets/backward.svg';
+}
+
+.vjs-play-control.vjs-paused{
+
+}
+
+.vjs-seek-button.vjs-skip-forward {
+  background-image: url("~projects/penpencil-player/src/assets/forward.svg");
+  background-repeat: no-repeat;
+  //transform: rotate(360deg);
+  &:before{
+    content: '';
+  }
+}
+
+.vjs-seek-button.vjs-skip-backward {
+  background-image: url("~projects/penpencil-player/src/assets/backward.svg");
+  background-repeat: no-repeat;
+  //transform: rotate(360deg);
+  &:before{
+    content: "";
+  }
 }
 
 /*
