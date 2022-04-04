@@ -88,6 +88,12 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         progressControl: {},
         liveui: {},
         fullscreenToggle: {},
+        volumePanel: {
+          inline: false,
+          volumeControl: {
+            vertical: true,
+          }
+        }
       };
     } else {
       this.playerControls = {
@@ -95,7 +101,13 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         currentTimeDisplay: {},
         progressControl: {},
         durationDisplay: {},
-        fullscreenToggle: {}
+        fullscreenToggle: {},
+        volumePanel: {
+          inline: false,
+          volumeControl: {
+            vertical: true,
+          }
+        }
       };
     }
   }
