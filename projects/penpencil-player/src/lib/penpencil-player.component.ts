@@ -45,6 +45,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   ) {
   }
 
+  check(event) {
+    console.log(event)
+  }
+
   ngOnInit() {
     this.playerConfigData = new PlayerConfig(this.playerConfig);
     this.callBacks();

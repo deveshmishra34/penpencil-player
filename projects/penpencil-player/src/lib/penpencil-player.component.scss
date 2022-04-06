@@ -185,6 +185,7 @@
       padding: 2px;
 
       .vjs-menu-content {
+        background-color: #000;
         list-style: none;
         padding: 0;
         margin: 0;
@@ -220,7 +221,7 @@
           }
 
           .vjs-icon-circle-inner-circle {
-            color: var(--vjs-theme-city--primary);
+            color: #fff;
           }
         }
 
@@ -266,7 +267,7 @@
 }
 
 .vjs-seek-button.vjs-skip-forward {
-  background-image: url("~projects/penpencil-player/src/assets/forward.svg");
+  background-image: url("../../assets/forward.png");
   background-repeat: no-repeat;
   //transform: rotate(360deg);
   &:before{
@@ -275,7 +276,7 @@
 }
 
 .vjs-seek-button.vjs-skip-backward {
-  background-image: url("~projects/penpencil-player/src/assets/backward.svg");
+  background-image: url("../../assets/backward.png");
   background-repeat: no-repeat;
   //transform: rotate(360deg);
   &:before{
