@@ -6,7 +6,6 @@
 }(this, function (videojs) { 'use strict';
 
   videojs = videojs && videojs.hasOwnProperty('default') ? videojs['default'] : videojs;
-
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype);
     subClass.prototype.constructor = subClass;

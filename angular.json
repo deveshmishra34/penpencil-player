@@ -14,7 +14,11 @@
           "options": {
             "tsConfig": "projects/penpencil-player/tsconfig.lib.json",
             "project": "projects/penpencil-player/ng-package.json"
-          }
+          },
+          "assets": [
+            "projects/penpencil-player/src/favicon.ico",
+            "projects/penpencil-player/src/assets"
+          ]
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
