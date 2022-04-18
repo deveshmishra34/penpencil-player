@@ -30,7 +30,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   @Output() onEnded: EventEmitter<any> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onFullscreenchange: EventEmitter<any> = new EventEmitter();
-
+  @Output() onSkip: EventEmitter<any> = new EventEmitter<any>();
   private player: any;
   private playerConfigData: PlayerConfig;
   private playerInfo: PlayerInfo;
@@ -226,6 +226,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       if (this.networkDetectionService.resetPlayerTimer) {
         this.setResetPlayer(speed.item);
       }
+    });
+
+    this.player.on('skip', () => {
+      console.log('running')
     });
 
 

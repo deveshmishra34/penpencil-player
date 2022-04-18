@@ -36,16 +36,17 @@
     }
 
     var _proto = SeekButton.prototype;
-
     _proto.buildCSSClass = function buildCSSClass() {
       return "vjs-seek-button vjs-skip-" + this.options_['direction'] + " vjs-icon-replay " + ("vjs-skip-" + this.options_['seconds'] + " " + _Button.prototype.buildCSSClass.call(this));
     };
 
     _proto.handleClick = function handleClick(event) {
+      // debugger;
+
       var direction = this.options['direction'];
       var seconds = this.options['seconds'];
       var remainingTime = this.player().remainingTime(); // console.log('Button tap', direction, seconds, this.player);
-
+      localStorage.setItem('skip', JSON.stringify({currentTime: this.player_.currentTime(), remainingtime: remainingTime}));
       switch (direction) {
         case 'forward':
           event.target.classList.add('vjs-skip-forward-anim');
