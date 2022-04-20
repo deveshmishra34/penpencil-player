@@ -17,6 +17,8 @@ async function moveFiles() {
       'videojs-watermark/videojs-watermark.js',
       'videojs-youtube/videojs-youtube.min.js',
       'videojs-hotkeys/videojs-hotkeys.min.js',
+      'projects/penpencil-player/src/assets/backward.png',
+      'projects/penpencil-player/src/assets/forward.png'
     ];
 
     repoFiles.forEach((item) => {
