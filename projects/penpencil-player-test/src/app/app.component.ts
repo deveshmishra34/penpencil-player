@@ -197,6 +197,10 @@ export class AppComponent {
     // console.log('fullScreen', data);
   }
 
+  // skip(event) {
+  //   console.log(event)
+  // }
+
   initializePlayer(dataa) {
     // console.log('data', dataa);
     this.player = dataa;
