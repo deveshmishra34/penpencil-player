@@ -296,14 +296,14 @@
   height: 30px;
   width: 27px;
   margin-top: 5px;
-  background-size: 100%;
-  background-image: url("assets/forward.png");
-  background-repeat: no-repeat;
-  margin-left: 13px;
+  //background-size: 100%;
+  //background-image: url("/assets/forward.png");
+  //background-repeat: no-repeat;
+  //margin-left: 13px;
   //transform: rotate(360deg);
-  &:before{
-    content: '';
-  }
+  //&:before{
+  //  content: '';
+  //}
 }
 
 .vjs-seek-button.vjs-skip-backward {
@@ -311,12 +311,12 @@
   margin-top: 5px;
   width: 27px;
   background-size: 100%;
-  background-image: url("assets/backward.png");
-  background-repeat: no-repeat;
+  //background-image: url("assets/backward.png");
+  //background-repeat: no-repeat;
   //transform: rotate(360deg);
-  &:before{
-    content: "";
-  }
+  //&:before{
+  //  content: "";
+  //}
 }
 
 /*
