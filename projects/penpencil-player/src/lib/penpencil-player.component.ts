@@ -118,10 +118,30 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private setupPlayer() {
     this.player = videojs('rs_penpencil_player', {
       html5: {
-        hls: {
+        vhs: {
           overrideNative: true,
-          enableLowInitialPlaylist: false
+          enableLowInitialPlaylist: this.playerConfigData.liveui, // in case of live set it true
+          limitRenditionByPlayerDimensions: !this.playerConfigData.liveui, // in case of live set it false dont pick quality by screen size just pick the lowest quality
+          // fastQualityChange: false,
+          bandwidth: this.playerConfigData.liveui ? 511023 : 1141986, // in case of live video pick lowest bitrate video (< 0.5Mbps) else pick mid qualiry video (> 1Mbps)
+          hlsjsConfig: {
+            startLevel: 0,
+            capLevelToPlayerSize: false,
+            // startQuality: 106,
+            // blacklistDuration: 120,
+            enableWorker: true,
+            liveBackBufferLength: 15,
+            backBufferLength: 15,
+            liveMaxBackBufferLength: 15,
+            maxBufferSize: 0,
+            maxBufferLength: 10,
+            liveSyncDurationCount: 1,
+          }
         },
+        // hls: {
+        //   overrideNative: true,
+        //   enableLowInitialPlaylist: false
+        // },
         nativeAudioTracks: false,
         nativeTextTracks: false
       },
@@ -142,7 +162,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         children: this.playerControls
       },
       inactivityTimeout: 5000,
-      preload: 'auto',
+      preload: 'metadata',
       controls: true,
       liveui: !!(this.playerConfigData.liveui),
       autoplay: this.playerConfigData.autoplay,
@@ -272,6 +292,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.player.play();
       this.player.bigPlayButton.show();
       console.log('ready', this.player.ready());
+      // this.player.tech().on('usage', (e) => {
+      //   console.log('usage', e.name);
+      // });
     });
 
     this.player.on('ended', () => {
@@ -288,7 +311,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         const vhs = this.player.tech().hls;
         if (vhs) {
           vhs.xhr.beforeRequest = (options) => {
-
+            // console.log('this.player.tech()', this.player.tech().hls.bandwidth, this.formatBytes(this.player.tech().hls.bandwidth));
             if (this.playerConfigData.query) {
               let URI = options.uri;
               if (this.playerConfigData.query[0] !== '?') {
@@ -406,6 +429,18 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         this.resetPlayer();
       }
     });
+  }
+
+  formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
   setResetPlayer(playbackRate?) {
