@@ -9,20 +9,20 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges
-} from '@angular/core';
-import {NetworkDetectionService} from './services/network-detection.service';
-import {Subscription} from 'rxjs';
+} from "@angular/core";
+import { NetworkDetectionService } from "./services/network-detection.service";
+import { Subscription } from "rxjs";
 
 declare const videojs;
 
 @Component({
-  selector: 'rs-penpencil-player',
-  templateUrl: 'penpencil-player.component.html',
-  styleUrls: ['./penpencil-player.component.scss'],
+  selector: "rs-penpencil-player",
+  templateUrl: "penpencil-player.component.html",
+  styleUrls: ["./penpencil-player.component.scss"],
   encapsulation: ViewEncapsulation.None
 })
-export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
-
+export class PenpencilPlayerComponent
+  implements OnInit, AfterContentInit, OnDestroy, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() inIt: EventEmitter<any> = new EventEmitter();
   @Output() onPlay: EventEmitter<any> = new EventEmitter<any>();
@@ -39,13 +39,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   private MAX_RETRY = 50;
   private RETRY = 0;
 
-  constructor(
-    private networkDetectionService: NetworkDetectionService
-  ) {
-  }
+  constructor(private networkDetectionService: NetworkDetectionService) {}
 
   check(event) {
-    console.log(event)
+    console.log(event);
   }
 
   ngOnInit() {
@@ -54,8 +51,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     this.networkChange();
   }
 
-  ngAfterContentInit() {
-  }
+  ngAfterContentInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.play(this.playerConfig);
@@ -71,8 +67,11 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private playerInit() {
-
-    if (!this.playerConfigData.sources || !this.playerConfigData.sources.length || !this.playerConfigData.sources[0].src) {
+    if (
+      !this.playerConfigData.sources ||
+      !this.playerConfigData.sources.length ||
+      !this.playerConfigData.sources[0].src
+    ) {
       return;
     }
 
@@ -83,7 +82,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private setupPlayerControls() {
-
     if (this.playerConfigData.liveui) {
       this.playerControls = {
         playToggle: {},
@@ -94,7 +92,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         volumePanel: {
           inline: false,
           volumeControl: {
-            vertical: true,
+            vertical: true
           }
         }
       };
@@ -108,7 +106,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         volumePanel: {
           inline: false,
           volumeControl: {
-            vertical: true,
+            vertical: true
           }
         }
       };
@@ -116,7 +114,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private setupPlayer() {
-    this.player = videojs('rs_penpencil_player', {
+    this.player = videojs("rs_penpencil_player", {
       html5: {
         vhs: {
           overrideNative: true,
@@ -135,7 +133,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
             liveMaxBackBufferLength: 15,
             maxBufferSize: 0,
             maxBufferLength: 10,
-            liveSyncDurationCount: 1,
+            liveSyncDurationCount: 1
           }
         },
         // hls: {
@@ -162,9 +160,9 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
         children: this.playerControls
       },
       inactivityTimeout: 5000,
-      preload: 'metadata',
+      preload: "metadata",
       controls: true,
-      liveui: !!(this.playerConfigData.liveui),
+      liveui: !!this.playerConfigData.liveui,
       autoplay: this.playerConfigData.autoplay,
       // currentTimeDisplay: true,
       errorDisplay: true,
@@ -183,9 +181,8 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private initializePlugins() {
-
     this.player.settingMenu({
-      menu: ['speed', 'quality'],
+      menu: ["speed", "quality"],
       defaultQuality: this.playerConfig.defaultQuality
     });
 
@@ -194,17 +191,21 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     if (this.playerConfigData.seekButtons) {
       this.player.seekButtons({
         forward: {
-          direction: 'forward',
+          direction: "forward",
           seconds: this.playerConfigData.seekSeconds
         },
         backward: {
-          direction: 'backward',
+          direction: "backward",
           seconds: this.playerConfigData.seekSeconds
         }
       });
     }
 
-    if (this.playerConfigData.watermark && (this.playerConfigData.watermark.text || this.playerConfigData.watermark.imageUrl)) {
+    if (
+      this.playerConfigData.watermark &&
+      (this.playerConfigData.watermark.text ||
+        this.playerConfigData.watermark.imageUrl)
+    ) {
       this.player.watermark(this.playerConfigData.watermark);
     }
   }
@@ -212,10 +213,10 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   retryInitPlayer() {
     if (this.RETRY === this.MAX_RETRY) {
       this.player.errorDisplay = true;
-      console.log('Maximum Reached  retry');
+      console.log("Maximum Reached  retry");
       return;
     }
-    console.log('RETRY' + this.RETRY);
+    console.log("RETRY" + this.RETRY);
     this.player.error(null);
     setTimeout(() => {
       this.play(this.playerConfig);
@@ -224,7 +225,6 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
   }
 
   private callBacks() {
-
     if (this.playerConfigData.fullScreenEnabled) {
       this.player.requestFullscreen();
     }
@@ -233,33 +233,50 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     //   console.log('error: ', _, error);
     // });
 
-    this.player.on('error', (error) => {
+    this.player.on("error", error => {
       this.onError.emit(error);
       // this.player.preventDefault();
       this.retryInitPlayer();
-      console.log('error: ', error);
+      console.log("error: ", error);
     });
+    this.player.controlBar.progressControl.seekBar.on("click", event => {
+      var remainingTime = this.player.remainingTime();
+      localStorage.setItem(
+        "skip",
+        JSON.stringify({
+          currentTime: this.player.currentTime(),
+          remainingTime: remainingTime
+        })
+      );
 
-    this.player.on('changePlaybackRate', (_, speed) => {
+      console.log(this.player.currentTime());
+    });
+    this.player.on("changePlaybackRate", (_, speed) => {
       this.playerConfigData.lastPlaybackRate = speed.item;
       if (this.networkDetectionService.resetPlayerTimer) {
         this.setResetPlayer(speed.item);
       }
     });
 
-    this.player.on('skip', () => {
-      console.log('running')
+    this.player.on("skip", () => {
+      console.log("running");
     });
 
-
-    this.player.on('play', () => {
+    this.player.on("play", () => {
       const networkState = this.player.networkState();
       const readyState = this.player.readyState();
       const seeking = this.player.seeking();
       const currentTime = Math.round(this.player.currentTime());
 
-      if (this.playerConfigData.startTime > 0 && currentTime !== this.playerConfigData.startTime && this.playerConfigData.startTime > currentTime && !seeking) {
-        this.playerConfigData.startTime = Math.round(this.playerConfigData.startTime);
+      if (
+        this.playerConfigData.startTime > 0 &&
+        currentTime !== this.playerConfigData.startTime &&
+        this.playerConfigData.startTime > currentTime &&
+        !seeking
+      ) {
+        this.playerConfigData.startTime = Math.round(
+          this.playerConfigData.startTime
+        );
         this.setCurrentTime(this.playerConfigData.startTime);
       }
 
@@ -284,84 +301,96 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
     //   console.log('timeupdate: ', data);
     // });
 
-    this.player.on('pause', () => {
+    this.player.on("pause", () => {
       this.onPause.emit(this.getPlayerInfo());
     });
 
-    this.player.on('ready', () => {
+    this.player.on("ready", () => {
       this.player.play();
       this.player.bigPlayButton.show();
-      console.log('ready', this.player.ready());
+      console.log("ready", this.player.ready());
       // this.player.tech().on('usage', (e) => {
       //   console.log('usage', e.name);
       // });
     });
 
-    this.player.on('ended', () => {
+    this.player.on("ended", () => {
       this.onEnded.emit(this.getPlayerInfo());
     });
 
-    this.player.on('fullscreenchange', () => {
+    this.player.on("fullscreenchange", () => {
       this.onFullscreenchange.emit(this.getPlayerInfo());
     });
 
     // if (this.playerConfigData.sources && this.playerConfigData.sources.length && this.playerConfigData.sources[0].type === 'application/x-mpegURL') {
-    this.player.on('loadstart', (e) => {
-
-        const vhs = this.player.tech().hls;
-        if (vhs) {
-          vhs.xhr.beforeRequest = (options) => {
-            // console.log('this.player.tech()', this.player.tech().hls.bandwidth, this.formatBytes(this.player.tech().hls.bandwidth));
-            if (this.playerConfigData.query) {
-              let URI = options.uri;
-              if (this.playerConfigData.query[0] !== '?') {
-                this.playerConfigData.query = '?' + this.playerConfigData.query;
-              }
-
-              if (URI.split('?').length > 1) {
-                URI = URI.split('?')[0] + this.playerConfigData.query + '&' + URI.split('?')[1];
-              }
-
-              if (URI.includes('v1/videos/get-hls-key?videoKey=')) {
-                const videoUrl = this.playerConfigData.sources[0].src;
-                const videoUrlArr = videoUrl.split('?')[0].split('/');
-                const videoHost = videoUrlArr.slice(0, 3).join('/') + '/';
-                const videoKey = videoUrlArr.slice(3).join('/');
-                // console.log('options.uri', options.uri, videoHost, videoKey.replace('master.m3u8', '/hls/enc.key'));
-                URI = videoHost + videoKey.replace('master.m3u8', 'hls/enc.key');
-              }
-
-              // console.log('policy check');
-              if (!URI.includes('Policy') && !URI.includes('Policy') && !URI.includes('Policy')) {
-                URI = options.uri + this.playerConfigData.query;
-              }
-
-              options.uri = URI;
+    this.player.on("loadstart", e => {
+      const vhs = this.player.tech().hls;
+      if (vhs) {
+        vhs.xhr.beforeRequest = options => {
+          // console.log('this.player.tech()', this.player.tech().hls.bandwidth, this.formatBytes(this.player.tech().hls.bandwidth));
+          if (this.playerConfigData.query) {
+            let URI = options.uri;
+            if (this.playerConfigData.query[0] !== "?") {
+              this.playerConfigData.query = "?" + this.playerConfigData.query;
             }
 
-            if (this.playerConfigData.encryptionUri) {
-              if (options.uri.includes('key://') && this.playerConfigData.encryptionUri) {
-                const key = options.uri.replace('key://', '');
-                options.uri = this.playerConfigData.encryptionUri + '&key=' + key;
+            if (URI.split("?").length > 1) {
+              URI =
+                URI.split("?")[0] +
+                this.playerConfigData.query +
+                "&" +
+                URI.split("?")[1];
+            }
 
-                if (this.playerConfigData.headers && this.playerConfigData.headers.length) {
-                  const headers = options.headers || {};
-                  for (let i = 0; i < this.playerConfigData.headers.length; i++) {
-                    Object.assign(headers, this.playerConfigData.headers[i]);
-                  }
+            if (URI.includes("v1/videos/get-hls-key?videoKey=")) {
+              const videoUrl = this.playerConfigData.sources[0].src;
+              const videoUrlArr = videoUrl.split("?")[0].split("/");
+              const videoHost = videoUrlArr.slice(0, 3).join("/") + "/";
+              const videoKey = videoUrlArr.slice(3).join("/");
+              // console.log('options.uri', options.uri, videoHost, videoKey.replace('master.m3u8', '/hls/enc.key'));
+              URI = videoHost + videoKey.replace("master.m3u8", "hls/enc.key");
+            }
 
-                  options.headers = headers;
+            // console.log('policy check');
+            if (
+              !URI.includes("Policy") &&
+              !URI.includes("Policy") &&
+              !URI.includes("Policy")
+            ) {
+              URI = options.uri + this.playerConfigData.query;
+            }
+
+            options.uri = URI;
+          }
+
+          if (this.playerConfigData.encryptionUri) {
+            if (
+              options.uri.includes("key://") &&
+              this.playerConfigData.encryptionUri
+            ) {
+              const key = options.uri.replace("key://", "");
+              options.uri = this.playerConfigData.encryptionUri + "&key=" + key;
+
+              if (
+                this.playerConfigData.headers &&
+                this.playerConfigData.headers.length
+              ) {
+                const headers = options.headers || {};
+                for (let i = 0; i < this.playerConfigData.headers.length; i++) {
+                  Object.assign(headers, this.playerConfigData.headers[i]);
                 }
+
+                options.headers = headers;
               }
             }
-            // else {
-            //   console.log('VHS does not exist', this.player);
-            // }
-          };
-        }
-      });
+          }
+          // else {
+          //   console.log('VHS does not exist', this.player);
+          // }
+        };
+      }
+    });
     // }
-
   }
 
   ngOnDestroy() {
@@ -405,42 +434,45 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
       this.playerResetSubs.unsubscribe();
     }
 
-    this.networkDetectionSubs = this.networkDetectionService.monitor(false).subscribe(currentState => {
-      const hasNetworkConnection = currentState.hasNetworkConnection;
-      const hasInternetAccess = currentState.hasInternetAccess;
-      if (hasNetworkConnection && hasInternetAccess) {
-        this.setResetPlayer();
-      }
-      // else {
-      // this.player.trigger('error', {});
-      // const playerBuffered = this.player.bufferedEnd();
-      //
-      // const pauseAfter = (Math.round(playerBuffered) - currentPlayerInfo.playTime) * 1000 || 0;
-      // // console.log('pauseAfter: ', playerBuffered, currentPlayerInfo.playTime, pauseAfter);
-      // setTimeout( () => {
-      //   this.player.pause();
-      // }, pauseAfter);
-      // }
-    });
+    this.networkDetectionSubs = this.networkDetectionService
+      .monitor(false)
+      .subscribe(currentState => {
+        const hasNetworkConnection = currentState.hasNetworkConnection;
+        const hasInternetAccess = currentState.hasInternetAccess;
+        if (hasNetworkConnection && hasInternetAccess) {
+          this.setResetPlayer();
+        }
+        // else {
+        // this.player.trigger('error', {});
+        // const playerBuffered = this.player.bufferedEnd();
+        //
+        // const pauseAfter = (Math.round(playerBuffered) - currentPlayerInfo.playTime) * 1000 || 0;
+        // // console.log('pauseAfter: ', playerBuffered, currentPlayerInfo.playTime, pauseAfter);
+        // setTimeout( () => {
+        //   this.player.pause();
+        // }, pauseAfter);
+        // }
+      });
 
-
-    this.playerResetSubs = this.networkDetectionService.resetPlayer().subscribe((value) => {
-      if (value) {
-        this.resetPlayer();
-      }
-    });
+    this.playerResetSubs = this.networkDetectionService
+      .resetPlayer()
+      .subscribe(value => {
+        if (value) {
+          this.resetPlayer();
+        }
+      });
   }
 
   formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
 
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
   }
 
   setResetPlayer(playbackRate?) {
@@ -462,7 +494,7 @@ export class PenpencilPlayerComponent implements OnInit, AfterContentInit, OnDes
 
   resetPlayer() {
     const lastPlaybackRate = this.player.playbackRate();
-    const playerConfigTemp = {...this.playerConfig};
+    const playerConfigTemp = { ...this.playerConfig };
     playerConfigTemp.startTime = Math.round(this.player.currentTime());
     playerConfigTemp.lastPlaybackRate = lastPlaybackRate;
     this.playerConfigData = playerConfigTemp;
@@ -511,7 +543,7 @@ class PlayerInfo {
     this.pause = data.pause || false;
     this.ended = data.ended || false;
     this.duration = Math.round(data.duration) || 0;
-    this.poster = data.poster || '';
+    this.poster = data.poster || "";
     this.volume = data.volume || 0;
     this.playTime = Math.round(data.playTime) || 0;
     this.remainingTime = Math.round(data.remainingTime) || 0;
@@ -555,7 +587,7 @@ class PlayerConfig {
   defaultQuality: string;
   responsive: boolean;
   forwardBackward: boolean;
-  watermark: { text: string, link: string, imageUrl: string };
+  watermark: { text: string; link: string; imageUrl: string };
   seekButtons: boolean;
   seekSeconds: number;
   lastPlaybackRate: number;
@@ -563,25 +595,24 @@ class PlayerConfig {
   constructor(config, playerCache?) {
     const data = config || {};
 
-    this.poster = data.poster || '';
+    this.poster = data.poster || "";
     this.liveui = data.liveui || false;
     this.sources = data.sources || [];
-    this.type = data.type || 'application/x-mpegURL';
+    this.type = data.type || "application/x-mpegURL";
     this.autoplay = data.autoplay || false;
-    this.encryptionUri = data.encryptionUri || '';
-    this.query = data.query || '';
-    this.headers = data.headers || '';
+    this.encryptionUri = data.encryptionUri || "";
+    this.query = data.query || "";
+    this.headers = data.headers || "";
     this.startTime = Math.round(data.startTime) || 0;
     this.fullScreenEnabled = data.fullScreenEnabled || false;
     this.fluid = data.fluid || false;
     this.fill = data.fill || false;
     this.responsive = data.responsive || false;
-    this.defaultQuality = data.defaultQuality || 'Auto';
+    this.defaultQuality = data.defaultQuality || "Auto";
     this.forwardBackward = data.forwardBackward || false;
     this.watermark = data.watermark || {};
     this.seekButtons = data.seekButtons || false;
     this.seekSeconds = data.seekSeconds || 10;
     this.lastPlaybackRate = data.lastPlaybackRate || 1;
-
   }
 }

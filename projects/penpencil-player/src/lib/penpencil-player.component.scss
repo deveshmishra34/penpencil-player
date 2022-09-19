@@ -7,7 +7,19 @@
     display: none !important;
   }
 }
-
+.vjs-theme-city .vjs-control-bar .vjs-current-time,
+.vjs-theme-city .vjs-control-bar .vjs-duration {
+  @media screen and (max-width: 425px) {
+    font-size: 10px !important;
+    top: -50px;
+  }
+}
+.vjs-theme-city .vjs-control-bar .vjs-progress-control {
+  @media screen and (max-width: 425px) {
+    font-size: 16px !important;
+    top: -16px;
+  }
+}
 
 .vjs-theme-city {
   --vjs-theme-city--primary: #bf3b4d;
@@ -21,7 +33,6 @@
        All width/height values use ems, which are a multiple of the font size.
        If the .video-js font-size is 10px, then 3em equals 30px.*/
     font-size: 2.5em;
-
 
     /* We're using SCSS vars here because the values are used in multiple places.
        Now that font size is set, the following em values will be a multiple of the
@@ -74,7 +85,7 @@
   }
 
   .vjs-setting-home {
-    background-color: rgba(255, 255, 255, .66);
+    background-color: rgba(255, 255, 255, 0.66);
     /* padding: 5px; */
     position: absolute;
     right: 10%;
@@ -88,7 +99,7 @@
   // main control bar
   .vjs-control-bar {
     background-color: transparent;
-    bottom: .7em;
+    bottom: 0.7em;
     height: 40px;
     left: 0;
     position: absolute;
@@ -99,7 +110,8 @@
     font-weight: bold;
 
     //.vjs-time-divider
-    .vjs-current-time, .vjs-duration {
+    .vjs-current-time,
+    .vjs-duration {
       display: flex;
       position: relative;
       top: -60px;
@@ -112,7 +124,7 @@
       margin: 0;
     }
 
-    .vjs-current-time-display{
+    .vjs-current-time-display {
       left: -100px;
       position: relative;
     }
@@ -120,7 +132,7 @@
     .vjs-liveui {
       line-height: 4em;
       .vjs-liveui-display:before {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 18px;
         left: 0px;
@@ -132,7 +144,8 @@
     }
 
     //play button in control bar
-    .vjs-button > .vjs-icon-placeholder::before, .vjs-playback-rate .vjs-playback-rate-value {
+    .vjs-button > .vjs-icon-placeholder::before,
+    .vjs-playback-rate .vjs-playback-rate-value {
       //line-height: 2.3em;
       display: flex;
       font-size: 2.5em;
@@ -183,18 +196,20 @@
       //}
 
       font-size: 3em;
-      .vjs-play-progress, .vjs-load-progress, .vjs-progress-holder {
+      .vjs-play-progress,
+      .vjs-load-progress,
+      .vjs-progress-holder {
         border-radius: 25px;
       }
 
       .vjs-play-progress {
-        background-color: #5156CF;
+        background-color: #5156cf;
       }
 
       //remove the play progress circle
       .vjs-play-progress::before {
         display: block;
-        color: #7B80FF;
+        color: #7b80ff;
       }
     }
 
@@ -204,7 +219,7 @@
       position: absolute;
       bottom: 110%;
       right: 0;
-      background-color: rgba(255, 255, 255, .66);
+      background-color: rgba(255, 255, 255, 0.66);
       font-size: 1.3em;
       border-radius: 5px;
       transition: width 0.5s;
@@ -242,7 +257,8 @@
             text-align: right;
           }
 
-          .vjs-icon-circle-outline, .vjs-icon-circle-inner-circle {
+          .vjs-icon-circle-outline,
+          .vjs-icon-circle-inner-circle {
             font-size: 1.3em;
           }
 
@@ -251,7 +267,10 @@
           }
         }
 
-        .vjs-setting-item:hover, .vjs-setting-item:active, .vjs-setting-item:focus , .vjs-setting-item-selected{
+        .vjs-setting-item:hover,
+        .vjs-setting-item:active,
+        .vjs-setting-item:focus,
+        .vjs-setting-item-selected {
           background-color: var(--vjs-theme-city--primary);
           color: white;
           .vjs-icon-circle-inner-circle {
@@ -261,7 +280,6 @@
       }
     }
   }
-
 }
 
 .video-js .vjs-title-bar {
@@ -273,23 +291,22 @@
   */
   display: none;
   font-size: 2em;
-  padding: .5em;
+  padding: 0.5em;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
 }
 
-.vjs-control-bar{
+.vjs-control-bar {
   color: #fff;
 }
 
-.vjs-play-control.vjs-play{
-  content: 'projects/penpencil-player/src/assets/backward.svg';
+.vjs-play-control.vjs-play {
+  content: "projects/penpencil-player/src/assets/backward.svg";
 }
 
-.vjs-play-control.vjs-paused{
-
+.vjs-play-control.vjs-paused {
 }
 
 .vjs-seek-button.vjs-skip-forward {
@@ -346,7 +363,7 @@
 //  background: #00ff00;
 //}
 
-.vjs-theme-city .vjs-progress-control{
+.vjs-theme-city .vjs-progress-control {
   position: absolute;
   top: -25px;
   right: 0;
