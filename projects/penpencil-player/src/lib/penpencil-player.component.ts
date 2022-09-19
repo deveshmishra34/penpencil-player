@@ -239,7 +239,7 @@ export class PenpencilPlayerComponent
       this.retryInitPlayer();
       console.log("error: ", error);
     });
-    this.player.controlBar.progressControl.seekBar.on("click", event => {
+    this.player.controlBar.progressControl.seekBar.on("mouseup", event => {
       var remainingTime = this.player.remainingTime();
       localStorage.setItem(
         "skip",
