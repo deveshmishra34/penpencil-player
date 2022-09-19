@@ -248,8 +248,6 @@ export class PenpencilPlayerComponent
           remainingTime: remainingTime
         })
       );
-
-      console.log(this.player.currentTime());
     });
     this.player.on("changePlaybackRate", (_, speed) => {
       this.playerConfigData.lastPlaybackRate = speed.item;
