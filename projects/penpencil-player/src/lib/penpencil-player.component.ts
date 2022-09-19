@@ -400,7 +400,7 @@ export class PenpencilPlayerComponent
 
   // set current time in seconds
   private setCurrentTime(time) {
-    this.player.currentTime(time);
+    this.player?.currentTime(time);
   }
 
   private setPlaybackRate(lastPlaybackrate) {
