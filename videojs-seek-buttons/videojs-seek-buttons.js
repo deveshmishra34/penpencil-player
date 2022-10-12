@@ -1,11 +1,16 @@
 /*! @name videojs-seek-buttons @version 1.0.0 @license MIT */
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js')) :
-    typeof define === 'function' && define.amd ? define(['video.js'], factory) :
-      (global = global || self, global.videojsSeekButtons = factory(global.videojs));
-}(this, function (videojs) { 'use strict';
+(function(global, factory) {
+  typeof exports === "object" && typeof module !== "undefined"
+    ? (module.exports = factory(require("video.js")))
+    : typeof define === "function" && define.amd
+    ? define(["video.js"], factory)
+    : ((global = global || self),
+      (global.videojsSeekButtons = factory(global.videojs)));
+})(this, function(videojs) {
+  "use strict";
 
-  videojs = videojs && videojs.hasOwnProperty('default') ? videojs['default'] : videojs;
+  videojs =
+    videojs && videojs.hasOwnProperty("default") ? videojs["default"] : videojs;
 
   function _inheritsLoose(subClass, superClass) {
     subClass.prototype = Object.create(superClass.prototype);
@@ -15,16 +20,16 @@
 
   var version = "1.0.0";
 
-  var Button = videojs.getComponent('Button'); // Default options for the plugin.
+  var Button = videojs.getComponent("Button"); // Default options for the plugin.
 
   var defaults = {
-    direction: 'forward',
+    direction: "forward",
     seconds: 10
   };
 
   var SeekButton =
     /*#__PURE__*/
-    function (_Button) {
+    (function(_Button) {
       _inheritsLoose(SeekButton, _Button);
 
       function SeekButton(player, options) {
@@ -39,23 +44,27 @@
       var _proto = SeekButton.prototype;
 
       _proto.buildCSSClass = function buildCSSClass() {
-        return "vjs-seek-button vjs-skip-" + this.options_['direction'] + " vjs-icon-replay " + ("vjs-skip-" + this.options_['seconds'] + " " + _Button.prototype.buildCSSClass.call(this));
+        return (
+          "vjs-seek-button vjs-skip-" +
+          this.options_["direction"] +
+          " vjs-icon-replay " +
+          ("vjs-skip-" +
+            this.options_["seconds"] +
+            " " +
+            _Button.prototype.buildCSSClass.call(this))
+        );
       };
 
       _proto.handleClick = function handleClick(event) {
-        var direction = this.options['direction'];
-        var seconds = this.options['seconds'];
+        var direction = this.options["direction"];
+        var seconds = this.options["seconds"];
         var remainingTime = this.player().remainingTime();
-        localStorage.setItem('skip', JSON.stringify({
-          currentTime: this.player().currentTime(),
-          remainingTime: remainingTime
-        })); // console.log('Button tap', direction, seconds, this.player);
 
         switch (direction) {
-          case 'forward':
-            event.target.classList.add('vjs-skip-forward-anim');
-            setTimeout(function () {
-              event.target.classList.remove('vjs-skip-forward-anim');
+          case "forward":
+            event.target.classList.add("vjs-skip-forward-anim");
+            setTimeout(function() {
+              event.target.classList.remove("vjs-skip-forward-anim");
             }, 100);
 
             if (remainingTime < seconds) {
@@ -65,10 +74,10 @@
             this.player_.currentTime(this.player_.currentTime() + seconds);
             break;
 
-          case 'backward':
-            event.target.classList.add('vjs-skip-backward-anim');
-            setTimeout(function () {
-              event.target.classList.remove('vjs-skip-backward-anim');
+          case "backward":
+            event.target.classList.add("vjs-skip-backward-anim");
+            setTimeout(function() {
+              event.target.classList.remove("vjs-skip-backward-anim");
             }, 100);
             this.player_.currentTime(this.player_.currentTime() - seconds);
             break;
@@ -76,23 +85,22 @@
       };
 
       return SeekButton;
-    }(Button); // Define default values for the plugin's `state` object here.
-
+    })(Button); // Define default values for the plugin's `state` object here.
 
   SeekButton.defaultState = {}; // Include the version number.
 
   SeekButton.VERSION = version;
-  videojs.registerComponent('seekButton', SeekButton);
+  videojs.registerComponent("seekButton", SeekButton);
 
-  var Plugin = videojs.getPlugin('plugin'); // Default options for the plugin.
+  var Plugin = videojs.getPlugin("plugin"); // Default options for the plugin.
 
   var defaults$1 = {
     forward: {
-      direction: 'forward',
+      direction: "forward",
       seconds: 10
     },
     backward: {
-      direction: 'backward',
+      direction: "backward",
       seconds: 10
     }
   };
@@ -104,7 +112,7 @@
 
   var SeekButtons =
     /*#__PURE__*/
-    function (_Plugin) {
+    (function(_Plugin) {
       _inheritsLoose(SeekButtons, _Plugin);
 
       /**
@@ -127,20 +135,35 @@
         _this = _Plugin.call(this, player) || this;
         _this.options = videojs.mergeOptions(defaults$1, options); // console.log('this.options: ', this.options);
 
-        _this.player.ready(function () {
-          _this.player.addClass('vjs-seek-buttons'); // console.log('Player is ready');
-
+        _this.player.ready(function() {
+          _this.player.addClass("vjs-seek-buttons"); // console.log('Player is ready');
 
           if (_this.options && _this.options.forward) {
-            _this.player.controlBar.seekForward = _this.player.controlBar.addChild('seekButton', _this.options.forward);
+            _this.player.controlBar.seekForward = _this.player.controlBar.addChild(
+              "seekButton",
+              _this.options.forward
+            );
 
-            _this.player.controlBar.el().insertBefore(_this.player.controlBar.seekForward.el(), _this.player.controlBar.el().firstChild.nextSibling);
+            _this.player.controlBar
+              .el()
+              .insertBefore(
+                _this.player.controlBar.seekForward.el(),
+                _this.player.controlBar.el().firstChild.nextSibling
+              );
           }
 
           if (_this.options && _this.options.backward) {
-            _this.player.controlBar.seekBackward = _this.player.controlBar.addChild('seekButton', _this.options.backward);
+            _this.player.controlBar.seekBackward = _this.player.controlBar.addChild(
+              "seekButton",
+              _this.options.backward
+            );
 
-            _this.player.controlBar.el().insertBefore(_this.player.controlBar.seekBackward.el(), _this.player.controlBar.el().firstChild.nextSibling);
+            _this.player.controlBar
+              .el()
+              .insertBefore(
+                _this.player.controlBar.seekBackward.el(),
+                _this.player.controlBar.el().firstChild.nextSibling
+              );
           }
         });
 
@@ -148,15 +171,13 @@
       }
 
       return SeekButtons;
-    }(Plugin); // Define default values for the plugin's `state` object here.
-
+    })(Plugin); // Define default values for the plugin's `state` object here.
 
   SeekButtons.defaultState = {}; // Include the version number.
 
   SeekButtons.VERSION = version; // Register the plugin with video.js.
 
-  videojs.registerPlugin('seekButtons', SeekButtons);
+  videojs.registerPlugin("seekButtons", SeekButtons);
 
   return SeekButtons;
-
-}));
+});

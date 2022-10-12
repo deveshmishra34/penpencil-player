@@ -30,6 +30,7 @@ export class PenpencilPlayerComponent
   @Output() onEnded: EventEmitter<any> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
   @Output() onFullscreenchange: EventEmitter<any> = new EventEmitter();
+  @Output() onVideoSkip: EventEmitter<any> = new EventEmitter();
   private player: any;
   private playerConfigData: PlayerConfig;
   private playerInfo: PlayerInfo;
@@ -232,6 +233,14 @@ export class PenpencilPlayerComponent
     // this.player.on('error', (_, error) => {
     //   console.log('error: ', _, error);
     // });
+    this.player.on("seeked", () => {
+      const data = {
+        remainingTime: this.player.remainingTime(),
+        currentTime: this.player.currentTime()
+      };
+
+      this.onVideoSkip.emit(data);
+    });
 
     this.player.on("error", error => {
       this.onError.emit(error);
@@ -239,16 +248,7 @@ export class PenpencilPlayerComponent
       this.retryInitPlayer();
       console.log("error: ", error);
     });
-    this.player.controlBar.progressControl.seekBar.on("mouseup", event => {
-      var remainingTime = this.player.remainingTime();
-      localStorage.setItem(
-        "skip",
-        JSON.stringify({
-          currentTime: this.player.currentTime(),
-          remainingTime: remainingTime
-        })
-      );
-    });
+
     this.player.on("changePlaybackRate", (_, speed) => {
       this.playerConfigData.lastPlaybackRate = speed.item;
       if (this.networkDetectionService.resetPlayerTimer) {
