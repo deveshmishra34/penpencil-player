@@ -119,7 +119,7 @@ export class AppComponent {
   sourcesHls = [
     {
       src:
-        "https://dfj9i4qx2jg7e.cloudfront.net/index.m3u8?start=1632381600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kZmo5aTRxeDJqZzdlLmNsb3VkZnJvbnQubmV0LyoiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE2MzI0MDMxNzd9fX1dfQ__&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=K2sw-vBym5pD5PR8O9sAVgAOWy-RsYaqhEzxukOQ4L2JTu7ZKyDgZfO0uHA9EmhZTdIbZ~SWNDyMUMC7Jkp~-M1U0Mj6DeQVl1xDhl4N7OCpPbGPB6hpCUdkOUgCs1dIQzqZ499oHELdr~Kb36MBmk2ZE1YM~CqlRd33g2J~LsLOuNUdhu8NS~KRQcDL4uKWc8V4I~6aSY~TfZvp73Y1I9CDFsVNk4QRamhIaz2gxYtKbXXj4DZ~9Jsh2rpt-6T~PeE8VX5ldAPYzZ9wCxQn7yV6QDZmphciAH3yp21P1sf9CVBuMhaql-WxPxgfjSH-ikm2kxFnwcICyXRkqYEhCA__&end=1632383400",
+        "http://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_stereo_subs.m3u8",
       type: "application/x-mpegURL",
       withCredentials: false,
       cacheEncryptionKeys: true
@@ -152,19 +152,30 @@ export class AppComponent {
   constructor() {
     setTimeout(() => {
       this.playerConfig = {
-        poster: "",
-        liveui: true,
-        sources: this.enrcyptedSources,
+        poster: "https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad",
+        liveui: false,
+        sources: this.sourcesHls,
+        // encryptionUri: 'https://api-dev.penpencil.xyz/v1/videos/get-hls-key?videoId=5fc48f0fc94dc43a3bf96144',
+        // headers: [
+        //   {
+        //     Cookie: 'CloudFront-Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ; CloudFront-Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjMyMTU1ODQ2fX19XX0_; CloudFront-Signature=UZKn0iItuVQfk2qVeObahTaSjZXtBuQExoJEkJjx218IEPyzr9yRCqvvl8EeK8ywF3UGDe3dJFp-3SjDO4y3VCk6FLw4frgcMCYF7pYn1EBMgltJtn8SNS-V~SoudXyPTQjpxU4bHtOnCVGFL3adNdiyxjhSMIpruYN5~v5NSBgRF3158XbMGy~Rszx3I9FBijsfK-bVUOCvr9t8iMplrJTJqealI-2KkyZBwq5nArfDDJ~wAjDd68lW0AgvnGmuV5W-uqivtyeNNz1IPffZpZacR4MIJjCsRmC~d~zKkHQhR4QTBbyUudE9zrL4GYRu-0WZPD8IO7AUBRmuvXCbug__'
+        //   }
+        // ],
+        // query: '?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMmUwb2djMGdha2Izei5jbG91ZGZyb250Lm5ldC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjYxNTM0NTMwfX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=KYZ7FMYw1kJb65GpNeXX7tDvzkKVSfLOu03P~hanzVyYw2d6H6V1MnpLd6VplXKk30CpPFpTfj0gt8IbROFj~NmBTZrpgUNzneNveb51z0BDME-D2cm6xAfbT688w~j~1sa7rcKa2ai44cMkfM-2fAAdK1a0LCt6DlEx7dXBmzhg6Qcs6e~xOi57TdOml8EL2b3aGixb0-ejmZgKLw1LuODA1ZVqNg13vj20EDnx0YFtOxkWcKvAeNsdY2Fb29eIH-UGWUGSdozQNch32volol70c1s4afliJjvOEz8Ju8Eu8u~4XAloP5Ay6JK7RsvNaSupyzSmUk-DCdiGKoYjvA__',
         autoplay: false,
         startTime: 0,
+        fluid: true,
+        fill: false,
+        responsive: false,
         fullScreenEnabled: false,
-        fluid: false,
-        fill: true,
-        responsive: true,
         seekButtons: true,
-        seekSeconds: 0,
-        query:
-          "Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMmUwb2djMGdha2Izei5jbG91ZGZyb250Lm5ldC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjY1NDI3NjE2fX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=mB4bBYkrP8t1lAp~mAPXdFocdUfeV3Dwd7e1Rr6mvhnm9-8ktLmQMMXxstlrYkRLoe1kBP8erx0Nl9R85ZS7a2~6ZJnLZfkXZUhRFax~n55YjteBXl0X6L9PN141ow6~vAeJMaoUsDwouriuR~u1E5-97SEt2nndjTrhRiujjSRpaGI~JRlQ78kV4GEBAXyi5UWyys6sHw3tySsN6TRpeEVHI4HDxqM2onz5EN32coUY4CcsWOVMTglZgV7LQrr~WCspKea4zEC~F4bWxFPY9PEbigT0iKmLGyzWodHiFVbaBc2yJediOWOZcjN-w6LyA16aCc7kGXaQvq7pTbpbng__"
+        seekSeconds: 30,
+        defaultQuality: "Auto", // auto|240|360...
+        watermark: {
+          url: "",
+          image: "",
+          text: "8888888888"
+        }
       };
     }, 5000);
 
