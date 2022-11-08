@@ -326,6 +326,18 @@ export class PenpencilPlayerComponent
       if (vhs) {
         vhs.xhr.beforeRequest = options => {
           // console.log('this.player.tech()', this.player.tech().hls.bandwidth, this.formatBytes(this.player.tech().hls.bandwidth));
+          if (options.uri.includes("api-dev.penpencil.xyz")) {
+            options.uri = options.uri.replace(
+              "api-dev.penpencil.xyz",
+              "dev-api.penpencil.co"
+            );
+          }
+          if (options.uri.includes("get-hls-key")) {
+            options.uri = options.uri.replace(
+              "get-hls-key",
+              "get-hls-key-direct"
+            );
+          }
           if (this.playerConfigData.query) {
             let URI = options.uri;
             if (this.playerConfigData.query[0] !== "?") {
@@ -340,7 +352,7 @@ export class PenpencilPlayerComponent
                 URI.split("?")[1];
             }
 
-            if (URI.includes("v1/videos/get-hls-key?videoKey=")) {
+            if (URI.includes("v1/videos/get-hls-key-direct?videoKey=")) {
               const videoUrl = this.playerConfigData.sources[0].src;
               const videoUrlArr = videoUrl.split("?")[0].split("/");
               const videoHost = videoUrlArr.slice(0, 3).join("/") + "/";
