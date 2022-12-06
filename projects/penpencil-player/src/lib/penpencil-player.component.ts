@@ -39,6 +39,9 @@ export class PenpencilPlayerComponent
   private playerResetSubs: Subscription;
   private MAX_RETRY = 50;
   private RETRY = 0;
+  private previousTime: number;
+  private currentTime: number;
+  private seekStart: number;
 
   constructor(private networkDetectionService: NetworkDetectionService) {}
 
@@ -233,12 +236,27 @@ export class PenpencilPlayerComponent
     // this.player.on('error', (_, error) => {
     //   console.log('error: ', _, error);
     // });
+    this.player.on('timeupdate', () => {
+      this.previousTime = this.currentTime;
+      this.currentTime = this.player.currentTime();
+      console.log('timeupdate');
+    });
+
+    this.player.on('seeking', () => {
+      console.log('seeking');
+      if (this.seekStart === null) {
+        this.seekStart = this.previousTime;
+      }
+    });
+
     this.player.on("seeked", () => {
       const data = {
         remainingTime: this.player.remainingTime(),
-        currentTime: this.player.currentTime()
+        currentTime: this.player.currentTime(),
+        startTime: this.seekStart
       };
-
+      console.log(data)
+      this.seekStart = null;
       this.onVideoSkip.emit(data);
     });
 
