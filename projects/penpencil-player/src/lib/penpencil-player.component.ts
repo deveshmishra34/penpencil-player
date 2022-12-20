@@ -122,9 +122,11 @@ export class PenpencilPlayerComponent
       html5: {
         vhs: {
           overrideNative: true,
+          experimentalLLHLS: this.playerConfigData.liveui && this.playerConfigData.forceLLHLSenable, // in case of live && to enable LLHLS set it true
           enableLowInitialPlaylist: this.playerConfigData.liveui, // in case of live set it true
           limitRenditionByPlayerDimensions: !this.playerConfigData.liveui, // in case of live set it false dont pick quality by screen size just pick the lowest quality
           // fastQualityChange: false,
+          experimentalBufferBasedABR: this.playerConfigData.liveui && this.playerConfigData.forceLLHLSenable,
           bandwidth: this.playerConfigData.liveui ? 511023 : 1141986, // in case of live video pick lowest bitrate video (< 0.5Mbps) else pick mid qualiry video (> 1Mbps)
           hlsjsConfig: {
             startLevel: 0,
@@ -570,6 +572,7 @@ class PlayerInfo {
 
 interface PlayerConfig {
   poster: string;
+  forceLLHLSenable: boolean;
   liveui: boolean;
   sources: Array<any>;
   type: string;
@@ -590,6 +593,7 @@ interface PlayerConfig {
 class PlayerConfig {
   poster: string;
   liveui: boolean;
+  forceLLHLSenable: boolean;
   sources: Array<any>;
   type: string;
   autoplay: boolean;
@@ -610,7 +614,7 @@ class PlayerConfig {
 
   constructor(config, playerCache?) {
     const data = config || {};
-
+  this.forceLLHLSenable = data.forceLLHLSenable || false;
     this.poster = data.poster || "";
     this.liveui = data.liveui || false;
     this.sources = data.sources || [];
