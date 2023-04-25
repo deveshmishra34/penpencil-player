@@ -1,6 +1,6 @@
 {
   "name": "penpencil-player",
-  "version": "2.5.15",
+  "version": "2.5.17",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -48,7 +48,7 @@
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
-    "video.js": "^7.6.6",
+    "video.js": "7.8.0",
     "videojs-contrib-eme": "^3.8.0"
   }
 }
