@@ -152,32 +152,29 @@ export class AppComponent {
   constructor() {
     setTimeout(() => {
       this.playerConfig = {
-        poster: "https://i.vimeocdn.com/video/850159740_1280x720.jpg?r=pad",
-        liveui: false,
-        sources: this.sourcesHls,
-        // encryptionUri: 'https://api-dev.penpencil.xyz/v1/videos/get-hls-key?videoId=5fc48f0fc94dc43a3bf96144',
-        // headers: [
-        //   {
-        //     Cookie: 'CloudFront-Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ; CloudFront-Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kcDkzNWFseGM2bWk0LmNsb3VkZnJvbnQubmV0L2UxNjc3OWI4LTM1YzAtNGJmZS04NzY1LTk4YTNmM2FiMzM0MS8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjMyMTU1ODQ2fX19XX0_; CloudFront-Signature=UZKn0iItuVQfk2qVeObahTaSjZXtBuQExoJEkJjx218IEPyzr9yRCqvvl8EeK8ywF3UGDe3dJFp-3SjDO4y3VCk6FLw4frgcMCYF7pYn1EBMgltJtn8SNS-V~SoudXyPTQjpxU4bHtOnCVGFL3adNdiyxjhSMIpruYN5~v5NSBgRF3158XbMGy~Rszx3I9FBijsfK-bVUOCvr9t8iMplrJTJqealI-2KkyZBwq5nArfDDJ~wAjDd68lW0AgvnGmuV5W-uqivtyeNNz1IPffZpZacR4MIJjCsRmC~d~zKkHQhR4QTBbyUudE9zrL4GYRu-0WZPD8IO7AUBRmuvXCbug__'
-        //   }
-        // ],
-        // query: '?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMmUwb2djMGdha2Izei5jbG91ZGZyb250Lm5ldC8qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjYxNTM0NTMwfX19XX0_&Key-Pair-Id=APKAJBP3D6S2IU5JK4LQ&Signature=KYZ7FMYw1kJb65GpNeXX7tDvzkKVSfLOu03P~hanzVyYw2d6H6V1MnpLd6VplXKk30CpPFpTfj0gt8IbROFj~NmBTZrpgUNzneNveb51z0BDME-D2cm6xAfbT688w~j~1sa7rcKa2ai44cMkfM-2fAAdK1a0LCt6DlEx7dXBmzhg6Qcs6e~xOi57TdOml8EL2b3aGixb0-ejmZgKLw1LuODA1ZVqNg13vj20EDnx0YFtOxkWcKvAeNsdY2Fb29eIH-UGWUGSdozQNch32volol70c1s4afliJjvOEz8Ju8Eu8u~4XAloP5Ay6JK7RsvNaSupyzSmUk-DCdiGKoYjvA__',
-        autoplay: false,
-        startTime: 0,
-        fluid: true,
-        fill: false,
-        responsive: false,
-        fullScreenEnabled: false,
-        seekButtons: true,
-        seekSeconds: 30,
-        defaultQuality: "Auto", // auto|240|360...
-        watermark: {
-          url: "",
-          image: "",
-          text: "8888888888"
-        }
-      };
-    }, 5000);
+        "poster": "https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/00d14863-d1b2-458c-93ac-2c951b48e922.png",
+        "liveui": false,
+        "sources": [
+            {
+                "src": "https://d1d34p8vz63oiq.cloudfront.net/2d3819be-28b6-4510-abda-f501fa97cebe/master.mpd",
+                "type": "application/dash+xml",
+                "keySystems": {
+                    "org.w3.clearkey": {
+                        "videoContentType": "video/mp4;codecs=\"avc1.42c01e\"",
+                        "audioContentType": "audio/mp4;codecs=\"mp4a.40.2\""
+                    }
+                }
+            }
+        ],
+        "autoplay": true,
+        "startTime": 0,
+        "fullScreenEnabled": false,
+        "fluid": true,
+        "fill": false,
+        "responsive": false,
+        "seekButtons": true,
+        "seekSeconds": 0
+    }}, 5000);
 
     // setTimeout(() => {
     //   console.log('Heyyy');
