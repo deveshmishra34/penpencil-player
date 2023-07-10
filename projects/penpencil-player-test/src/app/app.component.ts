@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
   title = "penpencil-player-test";
@@ -17,71 +17,61 @@ export class AppComponent {
 
   sourcesMp4 = [
     {
-      src:
-        "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=139&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=139&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "240"
+      label: "240",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=164&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=164&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "360"
+      label: "360",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=165&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388013340.sd.mp4?s=6fa71b681fe5f23a872b84d3ca66955ef0b75828&profile_id=165&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "540"
+      label: "540",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=174&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=174&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "720"
+      label: "720",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=175&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388013340.hd.mp4?s=25f13563db435ae827cf05b3d6cd6b94151889f3&profile_id=175&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "1080"
-    }
+      label: "1080",
+    },
   ];
 
   sourcesMop4 = [
     {
-      src:
-        "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=165&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=165&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "540"
+      label: "540",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=139&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=139&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "240"
+      label: "240",
     },
     {
-      src:
-        "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=164&oauth2_token_id=1289522162",
+      src: "https://player.vimeo.com/external/388011956.sd.mp4?s=5eecbb23995a7eff553f49843e3dc131d2074212&profile_id=164&oauth2_token_id=1289522162",
       type: "video/mp4",
-      label: "360"
-    }
+      label: "360",
+    },
   ];
 
   sourcesDash = [
     {
-      src:
-        "https://penpencil.pc.cdn.bitgravity.com/7592bc9f-c9e1-46d7-9925-0ea7d375d6114/master.mpd",
-      type: "application/dash+xml"
-    }
+      src: "https://penpencil.pc.cdn.bitgravity.com/7592bc9f-c9e1-46d7-9925-0ea7d375d6114/master.mpd",
+      type: "application/dash+xml",
+    },
   ];
 
   // enrcyptedSources getLicense function will only work in localhost and secured url (https)
   enrcyptedSources = [
     {
-      src:
-        "https://penpencil.pc.cdn.bitgravity.com/c25250fc-d702-4f47-8199-d1efbecabe51/master.mpd",
+      src: "https://penpencil.pc.cdn.bitgravity.com/c25250fc-d702-4f47-8199-d1efbecabe51/master.mpd",
       // src: 'http://localhost:9000/240/master_240.mpd',
       type: "application/dash+xml",
       keySystems: {
@@ -98,7 +88,7 @@ export class AppComponent {
             let keyObj = {
               kty: "oct",
               kid: request.kids[0],
-              k: this.hexToBase64(this.KEY) // This key sould be come from server
+              k: this.hexToBase64(this.KEY), // This key sould be come from server
             };
 
             // console.log('keys', JSON.stringify(keyObj), this.base64ToHex(request.kids[0]), this.KEY);
@@ -106,39 +96,38 @@ export class AppComponent {
               null,
               new TextEncoder().encode(
                 JSON.stringify({
-                  keys: [keyObj]
+                  keys: [keyObj],
                 })
               )
             );
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   ];
 
   sourcesHls = [
     {
-      src:
-        "http://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_stereo_subs.m3u8",
+      src: "http://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_stereo_subs.m3u8",
       type: "application/x-mpegURL",
       withCredentials: false,
-      cacheEncryptionKeys: true
-    }
+      cacheEncryptionKeys: true,
+    },
   ];
 
   encryptedSourcesHls = [
     {
       src: "http://localhost:9000/video/copy/playlist.m3u8",
       type: "application/x-mpegURL",
-      withCredentials: false
-    }
+      withCredentials: false,
+    },
   ];
 
   sourcesYoutube = [
     {
       type: "video/youtube",
-      src: "https://www.youtube.com/embed/yZZFobQNdug"
-    }
+      src: "https://www.youtube.com/embed/yZZFobQNdug",
+    },
   ];
 
   playerConfig: any;
@@ -152,29 +141,20 @@ export class AppComponent {
   constructor() {
     setTimeout(() => {
       this.playerConfig = {
-        "poster": "https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/00d14863-d1b2-458c-93ac-2c951b48e922.png",
-        "liveui": false,
-        "sources": [
-            {
-                "src": "https://d1d34p8vz63oiq.cloudfront.net/2d3819be-28b6-4510-abda-f501fa97cebe/master.mpd",
-                "type": "application/dash+xml",
-                "keySystems": {
-                    "org.w3.clearkey": {
-                        "videoContentType": "video/mp4;codecs=\"avc1.42c01e\"",
-                        "audioContentType": "audio/mp4;codecs=\"mp4a.40.2\""
-                    }
-                }
-            }
-        ],
-        "autoplay": true,
-        "startTime": 0,
-        "fullScreenEnabled": false,
-        "fluid": true,
-        "fill": false,
-        "responsive": false,
-        "seekButtons": true,
-        "seekSeconds": 0
-    }}, 5000);
+        poster:
+          "https://d2bps9p1kiy4ka.cloudfront.net/5eb393ee95fab7468a79d189/88497056-cbf3-43e5-a69e-f7f9b0612536.png",
+        liveui: false,
+        sources: this.enrcyptedSources,
+        autoplay: true,
+        startTime: 0,
+        fullScreenEnabled: false,
+        fluid: true,
+        fill: false,
+        responsive: false,
+        seekButtons: true,
+        seekSeconds: 0,
+      };
+    }, 5000);
 
     // setTimeout(() => {
     //   console.log('Heyyy');
